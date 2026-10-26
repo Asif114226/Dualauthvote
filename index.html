@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dual-Auth Vote | Smart Voting System</title>
+
+    <!-- Tailwind CSS -->
+    <link rel="stylesheet" href="./src/output.css">
+
+    <!-- Custom CSS -->
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        /* NAVBAR */
+        .navbar {
+            width: 100%;
+            background: #ffffff;
+            border-bottom: 4px solid #006a4e;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+            padding: 10px 24px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 14px;
+        }
+
+        /* LOGO */
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            flex-shrink: 0;
+        }
+
+        .brand-logo {
+            width: 46px !important;
+            height: 46px !important;
+            min-width: 46px;
+            max-width: 46px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 2px solid #006a4e;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+            display: block;
+        }
+
+        .brand-title {
+            margin: 0;
+            font-size: 22px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .green {
+            color: #006a4e;
+        }
+
+        .red {
+            color: #e31b23;
+        }
+
+        .tagline {
+            margin: 3px 0 0;
+            color: #6b7280;
+            font-size: 11px;
+        }
+
+        /* NAVIGATION */
+        .nav-right {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 3px;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-links a {
+            display: block;
+            padding: 10px 11px;
+            border-radius: 7px;
+            text-decoration: none;
+            color: #374151;
+            font-size: 14px;
+            font-weight: 600;
+            transition: 0.25s;
+        }
+
+        .nav-links a:hover {
+            background: #006a4e;
+            color: white;
+        }
+
+        /* ADMIN BUTTON */
+        .admin-link {
+            display: inline-block;
+            background: #1d4ed8;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 7px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+            transition: 0.25s;
+        }
+
+        .admin-link:hover {
+            background: #1e40af;
+        }
+
+        /* TRANSLATOR */
+        #google_translate_element {
+            max-width: 150px;
+            overflow: hidden;
+        }
+
+        /* NOTICE BAR */
+        .notice-bar {
+            width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+            background: #dc2626;
+            color: white;
+            padding: 11px 0;
+        }
+
+        .notice {
+            display: inline-block;
+            font-size: 15px;
+            font-weight: bold;
+            animation: moveNotice 24s linear infinite;
+        }
+
+        @keyframes moveNotice {
+            from {
+                transform: translateX(100vw);
+            }
+
+            to {
+                transform: translateX(-100%);
+            }
+        }
+
+        /* HERO SECTION */
+        .hero {
+            min-height: 78vh;
+            padding: 65px 20px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background:
+                linear-gradient(
+                    rgba(0, 0, 0, 0.55),
+                    rgba(0, 0, 0, 0.55)
+                ),
+                url("https://png.pngtree.com/background/20250111/original/pngtree-village-kids-are-running-with-national-flag-of-bangladesh-in-a-picture-image_16109602.jpg");
+
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .hero-content {
+            width: 100%;
+            max-width: 850px;
+            margin: auto;
+            text-align: center;
+        }
+
+        .hero-title {
+            margin: 0;
+            font-size: clamp(38px, 6vw, 62px);
+            font-weight: 800;
+        }
+
+        .hero-subtitle {
+            color: white;
+            font-size: 23px;
+            font-weight: 500;
+            margin-top: 16px;
+        }
+
+        .hero-description {
+            max-width: 720px;
+            margin: 22px auto 0;
+            color: white;
+            font-size: 17px;
+            line-height: 1.8;
+        }
+
+        /* BUTTONS */
+        .button-group {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 14px;
+            margin-top: 30px;
+        }
+
+        .main-button {
+            display: inline-block;
+            padding: 13px 25px;
+            border-radius: 8px;
+            color: white;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: 0.25s;
+        }
+
+        .main-button:hover {
+            transform: translateY(-2px);
+            filter: brightness(0.9);
+        }
+
+        .register-button {
+            background: #15803d;
+        }
+
+        .login-button {
+            background: #dc2626;
+        }
+
+        .admin-button {
+            background: #1d4ed8;
+        }
+
+        /* FEATURES */
+        .features {
+            display: flex;
+            align-items: stretch;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 35px;
+        }
+
+        .feature {
+            min-width: 145px;
+            padding: 18px 25px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.20);
+            backdrop-filter: blur(5px);
+            color: white;
+        }
+
+        .feature h3 {
+            margin: 0 0 7px;
+            font-size: 23px;
+        }
+
+        .feature p {
+            margin: 0;
+            font-size: 13px;
+        }
+
+        /* EXTRA LINKS */
+        .extra-links {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 22px;
+            margin-top: 30px;
+        }
+
+        .extra-links a {
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: underline;
+        }
+
+        .extra-links a:hover {
+            color: #86efac;
+        }
+
+        /* FOOTER */
+        .footer {
+            background: #111827;
+            color: white;
+            text-align: center;
+            padding: 22px 15px;
+        }
+
+        .footer p {
+            margin: 0;
+            font-size: 14px;
+        }
+
+        .footer-links {
+            margin-top: 15px;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 18px;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        .footer-links a:hover {
+            color: #86efac;
+            text-decoration: underline;
+        }
+
+        /* TABLET */
+        @media (max-width: 1000px) {
+            .navbar {
+                justify-content: center;
+            }
+
+            .nav-right {
+                width: 100%;
+            }
+        }
+
+        /* MOBILE */
+        @media (max-width: 600px) {
+            .navbar {
+                padding: 12px;
+            }
+
+            .brand-logo {
+                width: 40px !important;
+                height: 40px !important;
+                min-width: 40px;
+                max-width: 40px;
+            }
+
+            .brand-title {
+                font-size: 19px;
+            }
+
+            .nav-right {
+                gap: 10px;
+            }
+
+            .nav-links {
+                gap: 3px;
+            }
+
+            .nav-links a {
+                padding: 8px;
+                font-size: 12px;
+            }
+
+            .hero {
+                min-height: 75vh;
+                padding: 45px 15px;
+            }
+
+            .hero-subtitle {
+                font-size: 19px;
+            }
+
+            .hero-description {
+                font-size: 15px;
+                line-height: 1.7;
+            }
+
+            .main-button {
+                padding: 12px 18px;
+                font-size: 14px;
+            }
+
+            .feature {
+                min-width: 125px;
+                padding: 16px;
+            }
+
+            .extra-links {
+                gap: 15px;
+            }
+        }
+    </style>
+
+<style id="dav-shared-polish">
+:root{--dav-green:#006A4E;--dav-red:#F42A41;--dav-blue:#1E40AF}
+html{scroll-behavior:smooth} body{animation:davFade .45s ease both}
+@keyframes davFade{from{opacity:.0;transform:translateY(5px)}to{opacity:1;transform:none}}
+@keyframes davFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+button,a,[role=button]{transition:transform .18s ease,box-shadow .18s ease,background-color .18s ease}
+button:hover,a:hover{transform:translateY(-1px)}
+input,select,textarea{transition:border-color .2s,box-shadow .2s}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--dav-green)!important;box-shadow:0 0 0 3px #006a4e20}
+.dav-navbar{position:relative;z-index:40;background:#fff;border-bottom:1px solid #e5e7eb;box-shadow:0 4px 18px #0f172a0b}
+.dav-nav-inner{max-width:1240px;margin:auto;padding:13px 22px;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap}
+.dav-brand{font-weight:900;letter-spacing:-.04em;font-size:20px;text-decoration:none!important}
+.dav-brand .g{color:#006A4E}.dav-brand .r{color:#F42A41}.dav-brand .v{color:#006A4E}
+.dav-links{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.dav-links a{font-size:13px;font-weight:700;color:#334155;text-decoration:none;padding:9px 11px;border-radius:10px}
+.dav-links a:hover{background:#ecfdf5;color:#006A4E}
+.dav-translate{display:flex;align-items:center;gap:8px;font-size:12px;color:#475569}
+#google_translate_element{min-height:24px}
+.goog-te-gadget{font-family:inherit!important;font-size:12px!important}.goog-te-gadget .goog-te-combo{border:1px solid #d1d5db;border-radius:8px;padding:5px;max-width:150px;background:#fff}
+@media(max-width:680px){.dav-nav-inner{padding:12px}.dav-links{gap:2px}.dav-links a{padding:7px;font-size:12px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+</style>
+
+</head>
+
+<body>
+
+    <main>
+
+        <!-- NAVBAR -->
+        <nav class="navbar">
+
+            <!-- LOGO AND HOME LINK -->
+            <a href="index.html" class="brand">
+
+                <img
+                    src="https://img.magnific.com/premium-vector/outline-map-country-bangladesh-vector-illustration_628809-581.jpg?semt=ais_hybrid&w=740&q=80"
+                    alt="Bangladesh Logo"
+                    class="brand-logo"
+                    width="46"
+                    height="46">
+
+                <div>
+                    <h1 class="brand-title">
+                        <span class="green">Dual</span>
+                        <span class="red">Auth</span>
+                        <span class="green">Vote</span>
+                    </h1>
+
+                    <p class="tagline">Smart Voting System</p>
+                </div>
+
+            </a>
+
+            <!-- NAVIGATION LINKS -->
+            <div class="nav-right">
+
+                <ul class="nav-links">
+
+                    <li>
+                        <a href="index.html">Home</a>
+                    </li>
+
+                    <li>
+                        <a href="Registration.html">Registration</a>
+                    </li>
+
+                    <li>
+                        <a href="login.html">Login</a>
+                    </li>
+
+                    <li>
+                        <a href="notice.html">Notices</a>
+                    </li>
+
+                    <li>
+                        <a href="about.html">About</a>
+                    </li>
+
+                    <li>
+                        <a href="services.html">Services</a>
+                    </li>
+                    <li>
+                        <a href="vote-count.html">Vote Count</a>
+                    </li>
+
+                    <li>
+                        <a href="about.html">Contact</a>
+                    </li>
+
+                </ul>
+
+                <!-- VOTE COUNT LINK -->
+                <a href="vote-count.html" class="admin-link" style="background:#006a4e;">Vote Count</a>
+
+                <!-- ADMIN LINK -->
+                <a href="admin.html" class="admin-link">
+                    Admin
+                </a>
+
+                <!-- GOOGLE TRANSLATE -->
+                <div id="google_translate_element"></div>
+
+            </div>
+
+        </nav>
+
+        <!-- NOTICE BAR -->
+        <div class="notice-bar">
+
+            <div class="notice">
+                Voting registration is now open!
+                Please complete your verification.
+                &nbsp;&nbsp;&nbsp;
+                🇧🇩 Please verify your identity before voting.
+                &nbsp;&nbsp;&nbsp;
+                Follow all voting instructions carefully.
+            </div>
+
+        </div>
+
+        <!-- HERO SECTION -->
+        <section class="hero">
+
+            <div class="hero-content">
+
+                <h1 class="hero-title">
+                    <span style="color: #4ade80;">Dual</span>
+                    <span style="color: #f87171;">Auth</span>
+                    <span style="color: #4ade80;">Vote</span>
+                </h1>
+
+                <p class="hero-subtitle">
+                    Secure • Smart • Democratic
+                </p>
+
+                <p class="hero-description">
+                    Your vote is your voice. Dual-Auth Vote is a modern
+                    and secure digital voting platform designed to provide
+                    a simple, transparent, and trusted voting experience.
+                    With secure voter authentication and modern verification
+                    technology, we aim to protect the integrity of every vote.
+                </p>
+
+                <!-- MAIN BUTTONS -->
+                <div class="button-group">
+
+                    <a
+                        href="Registration.html"
+                        class="main-button register-button">
+                        Register Now
+                    </a>
+
+                    <a
+                        href="login.html"
+                        class="main-button login-button">
+                        Login
+                    </a>
+
+                    <a
+                        href="admin.html"
+                        class="main-button admin-button">
+                        Admin Panel
+                    </a>
+
+                </div>
+
+                <!-- FEATURES -->
+                <div class="features">
+
+                    <div class="feature">
+                        <h3>NID</h3>
+                        <p>Secure Identity</p>
+                    </div>
+
+                    <div class="feature">
+                        <h3>OTP</h3>
+                        <p>Secure Verification</p>
+                    </div>
+
+                    <div class="feature">
+                        <h3>Biometric</h3>
+                        <p>Protected Vote</p>
+                    </div>
+
+                </div>
+
+                <!-- ADDITIONAL PAGE LINKS -->
+                <div class="extra-links">
+
+                    <a href="about.html">About Us</a>
+
+                    <a href="services.html">Our Services</a>
+
+                    <a href="about.html">Contact Us</a>
+
+                    <a href="notice.html">Latest Notices</a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="footer">
+
+            <p>
+                &copy; 2026 Dual-Auth Vote |
+                Smart Voting System - Bangladesh
+            </p>
+
+            <div class="footer-links">
+
+                <a href="index.html">Home</a>
+
+                <a href="Registration.html">Registration</a>
+
+                <a href="login.html">Login</a>
+
+                <a href="about.html">About</a>
+
+                <a href="services.html">Services</a>
+
+                <a href="notice.html">Notices</a>
+
+                <a href="about.html">Contact</a>
+
+                <a href="admin.html">Admin</a>
+
+            </div>
+
+        </footer>
+
+    </main>
+
+    <!-- GOOGLE TRANSLATE -->
+    <script>
+        function googleTranslateElementInit() {
+
+            new google.translate.TranslateElement(
+                {
+                    pageLanguage: "en",
+                    includedLanguages: "en,bn",
+                    layout:
+                        google.translate.TranslateElement.InlineLayout.SIMPLE
+                },
+                "google_translate_element"
+            );
+
+        }
+    </script>
+
+    <script
+        src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit">
+    </script>
+
+</body>
+</html>

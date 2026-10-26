@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="stylesheet" href="./src/output.css"><title>Face Verification - Dual Auth Vote</title><script defer src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
+<style id="dav-shared-polish">
+:root{--dav-green:#006A4E;--dav-red:#F42A41;--dav-blue:#1E40AF}
+html{scroll-behavior:smooth} body{animation:davFade .45s ease both}
+@keyframes davFade{from{opacity:.0;transform:translateY(5px)}to{opacity:1;transform:none}}
+@keyframes davFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+button,a,[role=button]{transition:transform .18s ease,box-shadow .18s ease,background-color .18s ease}
+button:hover,a:hover{transform:translateY(-1px)}
+input,select,textarea{transition:border-color .2s,box-shadow .2s}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--dav-green)!important;box-shadow:0 0 0 3px #006a4e20}
+.dav-navbar{position:relative;z-index:40;background:#fff;border-bottom:1px solid #e5e7eb;box-shadow:0 4px 18px #0f172a0b}
+.dav-nav-inner{max-width:1240px;margin:auto;padding:13px 22px;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap}
+.dav-brand{font-weight:900;letter-spacing:-.04em;font-size:20px;text-decoration:none!important}
+.dav-brand .g{color:#006A4E}.dav-brand .r{color:#F42A41}.dav-brand .v{color:#006A4E}
+.dav-links{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.dav-links a{font-size:13px;font-weight:700;color:#334155;text-decoration:none;padding:9px 11px;border-radius:10px}
+.dav-links a:hover{background:#ecfdf5;color:#006A4E}
+.dav-translate{display:flex;align-items:center;gap:8px;font-size:12px;color:#475569}
+#google_translate_element{min-height:24px}
+.goog-te-gadget{font-family:inherit!important;font-size:12px!important}.goog-te-gadget .goog-te-combo{border:1px solid #d1d5db;border-radius:8px;padding:5px;max-width:150px;background:#fff}
+@media(max-width:680px){.dav-nav-inner{padding:12px}.dav-links{gap:2px}.dav-links a{padding:7px;font-size:12px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+</style>
+
+</head>
+<body class="min-h-screen bg-gray-100 text-gray-900">
+
+<nav class="dav-navbar" aria-label="Main navigation">
+ <div class="dav-nav-inner">
+  <a class="dav-brand" href="/index.html" aria-label="Dual Auth Vote home"><span class="g">Dual</span> <span class="r">Auth</span> <span class="v">Vote</span></a>
+  <div class="dav-links">
+   <a href="/index.html">Home</a><a href="/about.html">About</a><a href="/services.html">Services</a><a href="/notice.html">Notice</a><a href="/vote-count.html">Vote Count</a><a href="/Registration.html">Registration</a><a href="/login.html">Login</a>
+  </div>
+  <div class="dav-translate-slot"></div>
+ </div>
+</nav>
+<header class="bg-white shadow px-6 py-4"><div class="max-w-5xl mx-auto flex justify-between items-center"><h1 class="text-xl font-bold"><span class="text-green-700">Dual</span> <span class="text-red-600">Auth</span> <span class="text-green-700">Vote</span></h1><a href="index.html" class="text-green-700 font-semibold">Home</a></div></header>
+<main class="max-w-2xl mx-auto px-5 py-10"><section class="bg-white rounded-2xl shadow-lg p-6 md:p-8"><h1 class="text-3xl font-bold text-green-700 text-center">Verify Your Face</h1><p class="text-gray-600 text-center mt-2">Your live camera face must match the face template submitted during registration and approved by an administrator.</p><video id="camera" autoplay muted playsinline class="mt-6 w-full rounded-xl bg-black min-h-64"></video><p id="message" role="status" class="hidden mt-4 rounded-lg p-4 text-sm"></p><div class="grid sm:grid-cols-2 gap-3 mt-5"><button id="start" class="bg-green-700 hover:bg-green-800 text-white font-semibold py-3 rounded-lg">Start Camera</button><button id="verify" disabled class="bg-blue-700 hover:bg-blue-800 disabled:bg-gray-400 text-white font-semibold py-3 rounded-lg">Verify Face</button></div><a id="continue" href="ballot.html" class="hidden mt-5 block text-center rounded-lg bg-green-700 px-5 py-3 font-semibold text-white">Continue to Vote</a><button id="logout" class="mt-4 w-full border border-gray-300 py-3 rounded-lg">Not you? Sign out</button></section></main>
+<script>
+const camera=document.getElementById('camera'),start=document.getElementById('start'),verify=document.getElementById('verify'),message=document.getElementById('message'),next=document.getElementById('continue');let stream=null,modelsReady=false,busy=false;const MODEL_URL='https://cdn.jsdelivr.net/gh/justadudewhohacks/face-api.js@master/weights';
+function say(t,ok=false){message.textContent=t;message.className='mt-4 rounded-lg p-4 text-sm '+(ok?'bg-green-100 text-green-800':'bg-red-100 text-red-800');}
+async function models(){if(modelsReady)return;if(!window.faceapi)throw new Error('Face recognition library did not load. Check internet access and reload.');await Promise.all([faceapi.nets.ssdMobilenetv1.loadFromUri(MODEL_URL),faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL),faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL)]);modelsReady=true;}
+async function startCamera(){try{start.disabled=true;if(!navigator.mediaDevices?.getUserMedia)throw new Error('Camera needs localhost/HTTPS and a supported browser.');say('Requesting camera permission…',true);stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user'},audio:false});camera.srcObject=stream;await camera.play();say('Camera is on. Loading face recognition model…',true);await models();verify.disabled=false;say('Camera and face model are ready. Look directly at the camera and verify.',true);}catch(e){say(e.message||'Camera access failed. Check browser and Windows camera permissions.');}finally{start.disabled=false;}}
+start.addEventListener('click',startCamera);verify.addEventListener('click',async()=>{if(busy)return;busy=true;verify.disabled=true;try{const found=await faceapi.detectAllFaces(camera).withFaceLandmarks().withFaceDescriptors();if(found.length!==1)throw new Error('Exactly one clear face must be visible.');const csrfRes=await fetch('/api/csrf.php',{credentials:'same-origin'}),csrf=await csrfRes.json();const res=await fetch('/api/face-verify.php',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/x-www-form-urlencoded','X-CSRF-Token':csrf.csrf_token},body:new URLSearchParams({face_descriptor:JSON.stringify(Array.from(found[0].descriptor))})});const data=await res.json();if(!res.ok||!data.success)throw new Error(data.message||'Face verification failed.');say(data.message,true);next.classList.remove('hidden');if(stream)stream.getTracks().forEach(t=>t.stop());camera.srcObject=null;}catch(e){say(e.message||'Face verification failed.');}finally{busy=false;verify.disabled=!stream;}});document.getElementById('logout').addEventListener('click',async()=>{try{await fetch('/api/logout.php',{credentials:'same-origin'});}finally{location.href='login.html';}});window.addEventListener('load',()=>{if(location.protocol==='https:'||location.hostname==='localhost'||location.hostname==='127.0.0.1')startCamera();});window.addEventListener('beforeunload',()=>{if(stream)stream.getTracks().forEach(t=>t.stop());});
+</script></body></html>

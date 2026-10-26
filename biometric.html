@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="stylesheet" href="./src/output.css"><title>Verification Status - Dual Auth Vote</title>
+<style id="dav-shared-polish">
+:root{--dav-green:#006A4E;--dav-red:#F42A41;--dav-blue:#1E40AF}
+html{scroll-behavior:smooth} body{animation:davFade .45s ease both}
+@keyframes davFade{from{opacity:.0;transform:translateY(5px)}to{opacity:1;transform:none}}
+@keyframes davFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+button,a,[role=button]{transition:transform .18s ease,box-shadow .18s ease,background-color .18s ease}
+button:hover,a:hover{transform:translateY(-1px)}
+input,select,textarea{transition:border-color .2s,box-shadow .2s}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--dav-green)!important;box-shadow:0 0 0 3px #006a4e20}
+.dav-navbar{position:relative;z-index:40;background:#fff;border-bottom:1px solid #e5e7eb;box-shadow:0 4px 18px #0f172a0b}
+.dav-nav-inner{max-width:1240px;margin:auto;padding:13px 22px;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap}
+.dav-brand{font-weight:900;letter-spacing:-.04em;font-size:20px;text-decoration:none!important}
+.dav-brand .g{color:#006A4E}.dav-brand .r{color:#F42A41}.dav-brand .v{color:#006A4E}
+.dav-links{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.dav-links a{font-size:13px;font-weight:700;color:#334155;text-decoration:none;padding:9px 11px;border-radius:10px}
+.dav-links a:hover{background:#ecfdf5;color:#006A4E}
+.dav-translate{display:flex;align-items:center;gap:8px;font-size:12px;color:#475569}
+#google_translate_element{min-height:24px}
+.goog-te-gadget{font-family:inherit!important;font-size:12px!important}.goog-te-gadget .goog-te-combo{border:1px solid #d1d5db;border-radius:8px;padding:5px;max-width:150px;background:#fff}
+@media(max-width:680px){.dav-nav-inner{padding:12px}.dav-links{gap:2px}.dav-links a{padding:7px;font-size:12px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+</style>
+
+</head>
+<body class="min-h-screen bg-gray-100"><nav class="bg-white shadow-md border-b-4 border-green-700 px-6 py-4"><div class="max-w-6xl mx-auto text-2xl"><span class="text-green-700 font-bold">Dual</span> <span class="text-red-600 font-bold">Auth</span> <span class="text-green-700 font-bold">Vote</span></div></nav>
+<main class="max-w-2xl mx-auto px-4 py-12"><section class="bg-white rounded-xl shadow-lg p-8 text-center"><h1 class="text-2xl font-bold text-gray-900">Identity Review Status</h1><p class="mt-4 text-gray-600">NID image submissions are reviewed by an authorized administrator. Image submission alone does not establish official identity verification.</p><p class="mt-4 text-sm text-gray-500">Face matching, liveness detection and passkey authentication are not configured as verified identity checks in this project.</p><a href="login.html" class="mt-7 inline-block rounded-lg bg-green-700 px-6 py-3 font-semibold text-white">Continue to Sign In</a></section></main></body></html>

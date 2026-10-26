@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <link
+        rel="stylesheet"
+        href="./src/output.css"
+    >
+
+    <title>Election Notices - Dual Auth Vote</title>
+
+
+<style id="dav-shared-polish">
+:root{--dav-green:#006A4E;--dav-red:#F42A41;--dav-blue:#1E40AF}
+html{scroll-behavior:smooth} body{animation:davFade .45s ease both}
+@keyframes davFade{from{opacity:.0;transform:translateY(5px)}to{opacity:1;transform:none}}
+@keyframes davFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+button,a,[role=button]{transition:transform .18s ease,box-shadow .18s ease,background-color .18s ease}
+button:hover,a:hover{transform:translateY(-1px)}
+input,select,textarea{transition:border-color .2s,box-shadow .2s}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--dav-green)!important;box-shadow:0 0 0 3px #006a4e20}
+.dav-navbar{position:relative;z-index:40;background:#fff;border-bottom:1px solid #e5e7eb;box-shadow:0 4px 18px #0f172a0b}
+.dav-nav-inner{max-width:1240px;margin:auto;padding:13px 22px;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap}
+.dav-brand{font-weight:900;letter-spacing:-.04em;font-size:20px;text-decoration:none!important}
+.dav-brand .g{color:#006A4E}.dav-brand .r{color:#F42A41}.dav-brand .v{color:#006A4E}
+.dav-links{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.dav-links a{font-size:13px;font-weight:700;color:#334155;text-decoration:none;padding:9px 11px;border-radius:10px}
+.dav-links a:hover{background:#ecfdf5;color:#006A4E}
+.dav-translate{display:flex;align-items:center;gap:8px;font-size:12px;color:#475569}
+#google_translate_element{min-height:24px}
+.goog-te-gadget{font-family:inherit!important;font-size:12px!important}.goog-te-gadget .goog-te-combo{border:1px solid #d1d5db;border-radius:8px;padding:5px;max-width:150px;background:#fff}
+@media(max-width:680px){.dav-nav-inner{padding:12px}.dav-links{gap:2px}.dav-links a{padding:7px;font-size:12px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+</style>
+
+</head>
+
+<body class="min-h-screen bg-gray-100">
+
+<nav class="dav-navbar" aria-label="Main navigation">
+ <div class="dav-nav-inner">
+  <a class="dav-brand" href="/index.html" aria-label="Dual Auth Vote home"><span class="g">Dual</span> <span class="r">Auth</span> <span class="v">Vote</span></a>
+  <div class="dav-links">
+   <a href="/index.html">Home</a><a href="/about.html">About</a><a href="/services.html">Services</a><a href="/notice.html">Notice</a><a href="/vote-count.html">Vote Count</a><a href="/Registration.html">Registration</a><a href="/login.html">Login</a>
+  </div>
+  <div class="dav-translate-slot"></div>
+ </div>
+</nav>
+
+
+    <header
+        class="bg-white shadow-md
+               border-b-4 border-[#006A4E]"
+    >
+
+        <div
+            class="max-w-6xl mx-auto
+                   px-5 py-4
+                   flex items-center
+                   justify-between"
+        >
+
+            <div>
+
+                <h1>
+                   <span class="text-green-700 font-bold">
+                        Dual
+                    </span>
+
+                    <span class="text-red-600 font-bold">
+                        Auth
+                    </span>
+
+                    <span class="text-green-700 font-bold">
+                        Vote
+                    </span>
+                </h1>
+
+                <p class="text-sm text-gray-500">
+                    Election Notice Center
+                </p>
+
+            </div>
+
+            <a
+                href="index.html"
+                class="bg-[#006A4E]
+                       text-white
+                       px-4 py-2
+                       rounded-lg
+                       text-sm font-semibold"
+            >
+                Home
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <main
+        class="max-w-5xl mx-auto
+               px-5 py-8"
+    >
+
+        <section
+            class="bg-[#006A4E]
+                   text-white
+                   rounded-2xl
+                   p-6 md:p-8
+                   shadow-lg"
+        >
+
+            <p
+                class="text-green-100
+                       text-sm mb-2"
+            >
+                Official Election Information
+            </p>
+
+            <h2
+                class="text-2xl md:text-3xl
+                       font-bold"
+            >
+                Election Notices
+            </h2>
+
+            <p
+                class="mt-2
+                       text-green-50
+                       max-w-2xl"
+            >
+                View official election notices,
+                instructions and important
+                announcements published by
+                the election administration.
+            </p>
+
+        </section>
+
+
+        <section class="mt-8">
+
+            <div
+                class="flex flex-col
+                       md:flex-row
+                       md:items-center
+                       md:justify-between
+                       gap-3 mb-5"
+            >
+
+                <div>
+
+                    <h3
+                        class="text-xl
+                               font-bold text-gray-800"
+                    >
+                        Latest Notices
+                    </h3>
+
+                    <p
+                        class="text-sm
+                               text-gray-500"
+                    >
+                        Latest published notices
+                        appear first.
+                    </p>
+
+                </div>
+
+                <button
+                    id="refreshButton"
+                    class="bg-white
+                           border
+                           border-gray-300
+                           px-4 py-2
+                           rounded-lg
+                           text-sm
+                           font-semibold
+                           hover:bg-gray-50"
+                >
+                    Refresh Notices
+                </button>
+
+            </div>
+
+
+            <div
+                id="noticeList"
+                class="space-y-4"
+            >
+
+                <div
+                    class="bg-white
+                           rounded-xl
+                           shadow-sm
+                           p-6
+                           text-center"
+                >
+
+                    <p class="text-gray-500">
+                        Loading notices...
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="emptyMessage"
+                class="hidden
+                       bg-white
+                       rounded-xl
+                       shadow-sm
+                       p-10
+                       text-center"
+            >
+
+                <h3
+                    class="text-lg
+                           font-semibold
+                           text-gray-700"
+                >
+                    No notices available
+                </h3>
+
+                <p
+                    class="text-sm
+                           text-gray-500
+                           mt-2"
+                >
+                    New election notices will
+                    appear here after publication.
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <footer
+        class="mt-12
+               bg-[#006A4E]
+               text-white"
+    >
+
+        <div
+            class="max-w-6xl mx-auto
+                   px-5 py-6
+                   text-center"
+        >
+
+            <p class="text-sm">
+                Dual Auth Vote
+            </p>
+
+            <p
+                class="text-xs
+                       text-green-100
+                       mt-1"
+            >
+                Election Notice Center
+            </p>
+
+        </div>
+
+    </footer>
+
+
+    <script>
+const noticeList=document.getElementById("noticeList"),emptyMessage=document.getElementById("emptyMessage"),refreshButton=document.getElementById("refreshButton");
+function loadNotices(){
+ noticeList.innerHTML='<div class="bg-white rounded-xl shadow-sm p-6 text-center"><p class="text-gray-500">Loading notices...</p></div>';
+ fetch("api/notices.php",{credentials:"same-origin"}).then(r=>r.json()).then(data=>{
+  noticeList.innerHTML="";
+  if(!data.success||!data.notices?.length){emptyMessage.classList.remove("hidden");return;}
+  emptyMessage.classList.add("hidden");
+  data.notices.forEach(n=>{
+   const card=document.createElement("article");card.className="bg-white rounded-xl shadow-sm border border-gray-200 p-5 hover:shadow-md transition";
+   const wrap=document.createElement("div");wrap.className="flex flex-col md:flex-row md:items-center md:justify-between gap-4";
+   const info=document.createElement("div");info.className="flex items-start gap-4";
+   const badge=document.createElement("div");badge.className="w-12 h-12 rounded-lg bg-red-50 flex items-center justify-center";badge.innerHTML='<span class="text-red-600 font-bold">PDF</span>';
+   const text=document.createElement("div");const title=document.createElement("h3");title.className="font-bold text-gray-800 text-lg";title.textContent=n.title;
+   const date=document.createElement("p");date.className="text-sm text-gray-500 mt-1";date.textContent="Published: "+(n.created_at||"");
+   text.append(title,date);info.append(badge,text);
+   const actions=document.createElement("div");actions.className="flex gap-2";
+   if(n.file_path){const view=document.createElement("a");view.href=n.file_path;view.target="_blank";view.rel="noopener";view.textContent="View PDF";view.className="bg-[#006A4E] text-white px-4 py-2 rounded-lg text-sm font-semibold";const dl=view.cloneNode(true);dl.textContent="Download";dl.removeAttribute("target");dl.setAttribute("download","");dl.className="border border-[#006A4E] text-[#006A4E] px-4 py-2 rounded-lg text-sm font-semibold";actions.append(view,dl);}
+   wrap.append(info,actions);card.append(wrap);noticeList.append(card);
+  });
+ }).catch(e=>{noticeList.innerHTML='<div class="bg-white rounded-xl shadow-sm p-8 text-center text-red-600">Could not load notices.</div>';console.error(e);});
+}
+refreshButton.addEventListener("click",loadNotices);loadNotices();
+</script>
+
+</body>
+
+</html>

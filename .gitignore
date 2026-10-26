@@ -1,0 +1,23 @@
+# Secrets
+.env
+.env.*
+!.env.example
+*.sqlite3
+*.db
+.venv/
+__pycache__/
+*.py[cod]
+
+# Dependencies / generated assets
+node_modules/
+logs/
+
+# Uploaded identity/biometric and generated private files
+uploads/private/
+uploads/notices/*
+uploads/candidates/*
+!uploads/index.html
+!uploads/.htaccess
+
+# Private identity documents; never commit uploaded NID images
+private_nid_storage/

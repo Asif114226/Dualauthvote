@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="./src/output.css"><title>Face Registration - Dual Auth Vote</title>
+<script defer src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
+
+<style id="dav-shared-polish">
+:root{--dav-green:#006A4E;--dav-red:#F42A41;--dav-blue:#1E40AF}
+html{scroll-behavior:smooth} body{animation:davFade .45s ease both}
+@keyframes davFade{from{opacity:.0;transform:translateY(5px)}to{opacity:1;transform:none}}
+@keyframes davFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+button,a,[role=button]{transition:transform .18s ease,box-shadow .18s ease,background-color .18s ease}
+button:hover,a:hover{transform:translateY(-1px)}
+input,select,textarea{transition:border-color .2s,box-shadow .2s}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--dav-green)!important;box-shadow:0 0 0 3px #006a4e20}
+.dav-navbar{position:relative;z-index:40;background:#fff;border-bottom:1px solid #e5e7eb;box-shadow:0 4px 18px #0f172a0b}
+.dav-nav-inner{max-width:1240px;margin:auto;padding:13px 22px;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap}
+.dav-brand{font-weight:900;letter-spacing:-.04em;font-size:20px;text-decoration:none!important}
+.dav-brand .g{color:#006A4E}.dav-brand .r{color:#F42A41}.dav-brand .v{color:#006A4E}
+.dav-links{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.dav-links a{font-size:13px;font-weight:700;color:#334155;text-decoration:none;padding:9px 11px;border-radius:10px}
+.dav-links a:hover{background:#ecfdf5;color:#006A4E}
+.dav-translate{display:flex;align-items:center;gap:8px;font-size:12px;color:#475569}
+#google_translate_element{min-height:24px}
+.goog-te-gadget{font-family:inherit!important;font-size:12px!important}.goog-te-gadget .goog-te-combo{border:1px solid #d1d5db;border-radius:8px;padding:5px;max-width:150px;background:#fff}
+@media(max-width:680px){.dav-nav-inner{padding:12px}.dav-links{gap:2px}.dav-links a{padding:7px;font-size:12px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+</style>
+
+</head>
+<body class="min-h-screen bg-gray-100 text-gray-900">
+
+<nav class="dav-navbar" aria-label="Main navigation">
+ <div class="dav-nav-inner">
+  <a class="dav-brand" href="/index.html" aria-label="Dual Auth Vote home"><span class="g">Dual</span> <span class="r">Auth</span> <span class="v">Vote</span></a>
+  <div class="dav-links">
+   <a href="/index.html">Home</a><a href="/about.html">About</a><a href="/services.html">Services</a><a href="/notice.html">Notice</a><a href="/vote-count.html">Vote Count</a><a href="/Registration.html">Registration</a><a href="/login.html">Login</a>
+  </div>
+  <div class="dav-translate-slot"></div>
+ </div>
+</nav>
+
+<header class="bg-white shadow px-6 py-4"><div class="max-w-5xl mx-auto flex justify-between items-center"><h1 class="text-xl font-bold"><span class="text-green-700">Dual</span> <span class="text-red-600">Auth</span> <span class="text-green-700">Vote</span></h1><a href="index.html" class="text-green-700 font-semibold">Home</a></div></header>
+<main class="max-w-3xl mx-auto px-5 py-10"><section class="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+<h1 class="text-3xl font-bold text-green-700 text-center">Face Registration</h1><p class="text-gray-600 text-center mt-2">Capture one clear face. Your photo and face template will be submitted for administrator approval. Voting remains blocked until approval.</p>
+<div class="mt-6 rounded-lg bg-amber-50 border border-amber-200 p-4 text-sm text-amber-900">You must sign in first. Use good lighting, face the camera directly, and keep only one person in view.</div>
+<video id="camera" autoplay muted playsinline class="mt-6 w-full max-w-xl mx-auto rounded-xl bg-black min-h-64"></video><canvas id="canvas" class="hidden"></canvas>
+<p id="message" role="status" class="hidden mt-4 rounded-lg p-4 text-sm"></p>
+<div class="grid sm:grid-cols-2 gap-3 mt-5"><button id="startCamera" class="bg-green-700 hover:bg-green-800 text-white font-semibold py-3 rounded-lg">Start Camera</button><button id="captureFace" disabled class="bg-blue-700 hover:bg-blue-800 disabled:bg-gray-400 text-white font-semibold py-3 rounded-lg">Capture & Submit Face</button></div>
+<a href="login.html" class="block text-center mt-5 text-green-700 underline">Sign in / return to login</a>
+</section></main>
+<script>
+const camera=document.getElementById('camera'), canvas=document.getElementById('canvas'), startBtn=document.getElementById('startCamera'), captureBtn=document.getElementById('captureFace'), message=document.getElementById('message');
+let stream=null, modelsReady=false, busy=false;
+const MODEL_URL='https://cdn.jsdelivr.net/gh/justadudewhohacks/face-api.js@master/weights';
+function showMessage(text,ok=false){message.textContent=text;message.className='mt-4 rounded-lg p-4 text-sm '+(ok?'bg-green-100 text-green-800':'bg-red-100 text-red-800');}
+async function loadModels(){if(modelsReady)return; if(!window.faceapi)throw new Error('Face recognition library did not load. Check internet access and reload.'); await Promise.all([faceapi.nets.ssdMobilenetv1.loadFromUri(MODEL_URL),faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL),faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL)]);modelsReady=true;}
+async function startCamera(){try{startBtn.disabled=true;if(!navigator.mediaDevices?.getUserMedia)throw new Error('Camera needs localhost/HTTPS and a supported browser.');showMessage('Requesting camera permission…',true);stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user'},audio:false});camera.srcObject=stream;await camera.play();showMessage('Camera is on. Loading face recognition model…',true);await loadModels();captureBtn.disabled=false;showMessage('Camera and face model are ready. Capture and submit your face.',true);}catch(e){showMessage(e.message||'Could not start camera. Check browser and Windows camera permissions.');}finally{startBtn.disabled=false;}}
+startBtn.addEventListener('click',startCamera);
+captureBtn.addEventListener('click',async()=>{if(busy)return;busy=true;captureBtn.disabled=true;try{if(!stream||!camera.videoWidth)throw new Error('Start the camera and wait for the preview first.');showMessage('Detecting face…',true);const result=await faceapi.detectAllFaces(camera).withFaceLandmarks().withFaceDescriptors();if(result.length!==1)throw new Error('Exactly one clear face must be visible. Adjust lighting and try again.');const d=Array.from(result[0].descriptor);canvas.width=camera.videoWidth;canvas.height=camera.videoHeight;canvas.getContext('2d').drawImage(camera,0,0,canvas.width,canvas.height);const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/jpeg',0.9));if(!blob)throw new Error('Could not capture image.');const csrfRes=await fetch('/api/csrf.php',{credentials:'same-origin'}),csrf=await csrfRes.json();if(!csrfRes.ok||!csrf.csrf_token)throw new Error('Please sign in first, then try again.');const form=new FormData();form.append('face_image',blob,'face-capture.jpg');form.append('face_descriptor',JSON.stringify(d));const res=await fetch('/api/face-enrollment.php',{method:'POST',credentials:'same-origin',headers:{'X-CSRF-Token':csrf.csrf_token},body:form});const data=await res.json();if(!res.ok||!data.success)throw new Error(data.message||'Face registration failed.');showMessage(data.message+' You will be able to vote only after admin approval and a successful face match at login.',true);if(stream)stream.getTracks().forEach(t=>t.stop());camera.srcObject=null;}catch(e){showMessage(e.message||'Face registration failed.');}finally{busy=false;captureBtn.disabled=!stream;}});
+// Try to request camera access on page entry; browsers may still require a user click.
+window.addEventListener('load',()=>{if(location.protocol==='https:'||location.hostname==='localhost'||location.hostname==='127.0.0.1')startCamera();});
+window.addEventListener('beforeunload',()=>{if(stream)stream.getTracks().forEach(t=>t.stop());});
+</script></body></html>

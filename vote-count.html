@@ -1,0 +1,894 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Vote Count - Dual Auth Vote</title>
+    <link rel="stylesheet" href="./src/output.css">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f3f6f4;
+            color: #1f2937;
+        }
+
+        .topbar {
+            background: #ffffff;
+            border-bottom: 3px solid #006A4E;
+            padding: 18px 6%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 14px;
+        }
+
+        .brand {
+            font-size: 25px;
+            font-weight: 800;
+            letter-spacing: -0.7px;
+        }
+
+        .brand .dual,
+        .brand .vote {
+            color: #006A4E;
+        }
+
+        .brand .auth {
+            color: #F42A41;
+        }
+
+        .navlinks {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .navlinks a {
+            color: #334155;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .navlinks a:hover {
+            color: #006A4E;
+        }
+
+        .hero {
+            background: #006A4E;
+            color: white;
+            padding: 38px 20px;
+            text-align: center;
+            border-bottom: 5px solid #F42A41;
+        }
+
+        .hero h1 {
+            margin: 0 0 10px;
+            font-size: clamp(26px, 4vw, 36px);
+        }
+
+        .hero p {
+            margin: 0;
+            color: #e0f2e9;
+            line-height: 1.7;
+        }
+
+        .container {
+            width: min(1050px, 92%);
+            margin: 30px auto;
+        }
+
+        .panel {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid #e2e8e4;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            margin-bottom: 22px;
+        }
+
+        .panel h2 {
+            color: #006A4E;
+            margin: 0 0 10px;
+            font-size: 22px;
+        }
+
+        .description {
+            color: #64748b;
+            margin: 0 0 22px;
+            line-height: 1.7;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .field label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .field select {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            background: #ffffff;
+            color: #1f2937;
+            font-size: 15px;
+            outline: none;
+        }
+
+        .field select:focus {
+            border-color: #006A4E;
+            box-shadow: 0 0 0 3px rgba(0, 106, 78, 0.12);
+        }
+
+        .field select:disabled {
+            background: #f1f5f9;
+            color: #94a3b8;
+            cursor: not-allowed;
+        }
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 22px;
+        }
+
+        button {
+            border: 0;
+            border-radius: 8px;
+            padding: 13px 22px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .search-btn {
+            background: #006A4E;
+            color: white;
+        }
+
+        .search-btn:hover {
+            background: #00523d;
+        }
+
+        .reset-btn {
+            background: #F42A41;
+            color: white;
+        }
+
+        .reset-btn:hover {
+            background: #d91f34;
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .status {
+            margin-top: 17px;
+            padding: 12px 14px;
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 8px;
+            color: #166534;
+            font-size: 14px;
+            line-height: 1.7;
+            overflow-wrap: anywhere;
+        }
+
+        .status.error {
+            background: #fff1f2;
+            border-color: #fecdd3;
+            color: #be123c;
+        }
+
+        .status.info {
+            background: #eff6ff;
+            border-color: #bfdbfe;
+            color: #1d4ed8;
+        }
+
+        .result-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+
+        .result-heading h2 {
+            margin: 0;
+        }
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 15px;
+        }
+
+        .stat {
+            padding: 22px 15px;
+            background: #f8faf9;
+            border: 1px solid #e2e8e4;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .number {
+            color: #006A4E;
+            font-size: 30px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            overflow-wrap: anywhere;
+        }
+
+        .stat .label {
+            color: #64748b;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .area-name {
+            background: #f0fdf4;
+            border-left: 4px solid #006A4E;
+            padding: 13px;
+            border-radius: 6px;
+            margin-bottom: 18px;
+            line-height: 1.8;
+            overflow-wrap: anywhere;
+        }
+
+        .candidate-card {
+            padding: 18px;
+            margin-bottom: 12px;
+            background: #f8faf9;
+            border: 1px solid #e2e8e4;
+            border-radius: 10px;
+        }
+
+        .candidate-name {
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .candidate-votes {
+            color: #006A4E;
+            font-weight: 700;
+        }
+
+        .footer {
+            background: #064e3b;
+            color: #d1fae5;
+            text-align: center;
+            padding: 22px 12px;
+            margin-top: 45px;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        [hidden] {
+            display: none !important;
+        }
+
+        @media (max-width: 650px) {
+            .form-grid,
+            .result-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .panel {
+                padding: 18px;
+            }
+
+            .topbar {
+                padding: 16px 5%;
+            }
+
+            .navlinks {
+                gap: 12px;
+            }
+
+            .brand {
+                font-size: 23px;
+            }
+        }
+    </style>
+
+<style id="dav-shared-polish">
+:root{--dav-green:#006A4E;--dav-red:#F42A41;--dav-blue:#1E40AF}
+html{scroll-behavior:smooth} body{animation:davFade .45s ease both}
+@keyframes davFade{from{opacity:.0;transform:translateY(5px)}to{opacity:1;transform:none}}
+@keyframes davFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+button,a,[role=button]{transition:transform .18s ease,box-shadow .18s ease,background-color .18s ease}
+button:hover,a:hover{transform:translateY(-1px)}
+input,select,textarea{transition:border-color .2s,box-shadow .2s}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--dav-green)!important;box-shadow:0 0 0 3px #006a4e20}
+.dav-navbar{position:relative;z-index:40;background:#fff;border-bottom:1px solid #e5e7eb;box-shadow:0 4px 18px #0f172a0b}
+.dav-nav-inner{max-width:1240px;margin:auto;padding:13px 22px;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap}
+.dav-brand{font-weight:900;letter-spacing:-.04em;font-size:20px;text-decoration:none!important}
+.dav-brand .g{color:#006A4E}.dav-brand .r{color:#F42A41}.dav-brand .v{color:#006A4E}
+.dav-links{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.dav-links a{font-size:13px;font-weight:700;color:#334155;text-decoration:none;padding:9px 11px;border-radius:10px}
+.dav-links a:hover{background:#ecfdf5;color:#006A4E}
+.dav-translate{display:flex;align-items:center;gap:8px;font-size:12px;color:#475569}
+#google_translate_element{min-height:24px}
+.goog-te-gadget{font-family:inherit!important;font-size:12px!important}.goog-te-gadget .goog-te-combo{border:1px solid #d1d5db;border-radius:8px;padding:5px;max-width:150px;background:#fff}
+@media(max-width:680px){.dav-nav-inner{padding:12px}.dav-links{gap:2px}.dav-links a{padding:7px;font-size:12px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+</style>
+
+</head>
+
+<body>
+
+    <header class="topbar">
+        <div class="brand">
+            <span class="dual">Dual</span><span class="auth">Auth</span> <span class="vote">Vote</span>
+        </div>
+
+        <nav class="navlinks">
+            <a href="index.html">Home</a>
+            <a href="about.html">Services</a>
+            <a href="about.html">About</a>
+            <a href="notice.html">Notice</a>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>Election Vote Count</h1>
+        <p>Select your area to check the available voting results.</p>
+    </section>
+
+    <main class="container">
+
+        <section class="panel">
+            <h2>Select Your Area</h2>
+
+            <p class="description">
+                Select your division, district, upazila and ward to search for voting results.
+            </p>
+
+            <div class="form-grid">
+
+                <div class="field">
+                    <label for="division">Division</label>
+                    <select id="division" disabled>
+                        <option value="">Loading divisions...</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label for="district">District</label>
+                    <select id="district" disabled>
+                        <option value="">Select district</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label for="upazila">Upazila</label>
+                    <select id="upazila" disabled>
+                        <option value="">Select upazila</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label for="ward">Ward</label>
+                    <select id="ward" disabled>
+                        <option value="">Select ward</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="actions">
+                <button type="button" id="searchBtn" class="search-btn">
+                    Search Vote Count
+                </button>
+
+                <button type="button" id="resetBtn" class="reset-btn">
+                    Reset
+                </button>
+            </div>
+
+            <div id="locationStatus" class="status" role="status" aria-live="polite">
+                Loading Bangladesh location data...
+            </div>
+        </section>
+
+        <section class="panel" id="resultsPanel" hidden>
+
+            <div class="result-heading">
+                <h2>Voting Results</h2>
+            </div>
+
+            <div id="selectedArea" class="area-name"></div>
+
+            <div class="result-grid">
+
+                <div class="stat">
+                    <div class="number" id="totalVotes">—</div>
+                    <div class="label">Total Votes</div>
+                </div>
+
+                <div class="stat">
+                    <div class="number" id="validVotes">—</div>
+                    <div class="label">Valid Votes</div>
+                </div>
+
+                <div class="stat">
+                    <div class="number" id="candidateCount">—</div>
+                    <div class="label">Candidates</div>
+                </div>
+
+            </div>
+
+            <div id="resultStatus" class="status info">
+                Results will appear here.
+            </div>
+
+            <div id="candidateResults" style="margin-top:22px"></div>
+
+        </section>
+
+    </main>
+
+    <footer class="footer">
+        <div>Dual Auth Vote — Bangladesh</div>
+        <div>Voting results depend on the data returned by the server.</div>
+    </footer>
+
+    <script>
+        "use strict";
+
+        const LOCATION_API =
+            "https://iqbalhasandev.github.io/bangladesh-geo-json/bangladesh-geo.json";
+
+        const VOTE_API = "./api/vote-count.php";
+
+        const divisionSelect = document.getElementById("division");
+        const districtSelect = document.getElementById("district");
+        const upazilaSelect = document.getElementById("upazila");
+        const wardSelect = document.getElementById("ward");
+
+        const locationStatus = document.getElementById("locationStatus");
+        const resultsPanel = document.getElementById("resultsPanel");
+        const resultStatus = document.getElementById("resultStatus");
+        const searchBtn = document.getElementById("searchBtn");
+        const resetBtn = document.getElementById("resetBtn");
+
+        let bangladeshData = [];
+
+        function setStatus(element, message, type = "success") {
+            element.textContent = message;
+            element.className = "status";
+
+            if (type === "error") {
+                element.classList.add("error");
+            }
+
+            if (type === "info") {
+                element.classList.add("info");
+            }
+        }
+
+        function displayName(item) {
+            if (!item) return "";
+            return item.bn_name
+                ? item.name + " — " + item.bn_name
+                : item.name || "";
+        }
+
+        function populate(select, placeholder, items, disabled = false) {
+            select.replaceChildren();
+
+            const firstOption = document.createElement("option");
+            firstOption.value = "";
+            firstOption.textContent = placeholder;
+            select.appendChild(firstOption);
+
+            (items || []).forEach(item => {
+                const option = document.createElement("option");
+                option.value = item.name;
+                option.textContent = displayName(item);
+                select.appendChild(option);
+            });
+
+            select.disabled = disabled || !items || items.length === 0;
+        }
+
+        function getSelectedDivision() {
+            return bangladeshData.find(
+                item => item.name === divisionSelect.value
+            );
+        }
+
+        function getSelectedDistrict() {
+            const division = getSelectedDivision();
+
+            if (!division) return null;
+
+            return division.districts.find(
+                item => item.name === districtSelect.value
+            );
+        }
+
+        function clearResults() {
+            resultsPanel.hidden = true;
+
+            document.getElementById("totalVotes").textContent = "—";
+            document.getElementById("validVotes").textContent = "—";
+            document.getElementById("candidateCount").textContent = "—";
+            document.getElementById("selectedArea").textContent = "";
+
+            document.getElementById("candidateResults").replaceChildren();
+        }
+
+        function fillWards() {
+            const wards = Array.from({ length: 99 }, (_, index) => ({
+                name: String(index + 1)
+            }));
+
+            populate(wardSelect, "Select ward (1–99)", wards);
+        }
+
+        async function loadLocations() {
+            setStatus(
+                locationStatus,
+                "Loading divisions, districts and upazilas..."
+            );
+
+            try {
+                const response = await fetch(LOCATION_API);
+
+                if (!response.ok) {
+                    throw new Error("HTTP " + response.status);
+                }
+
+                const data = await response.json();
+
+                if (!Array.isArray(data) || data.length === 0) {
+                    throw new Error("Invalid location data format.");
+                }
+
+                bangladeshData = data.map(division => ({
+                    name: division.name,
+                    bn_name: division.bn_name || "",
+
+                    districts: (division.districts || []).map(district => ({
+                        name: district.name,
+                        bn_name: district.bn_name || "",
+
+                        upazilas: (district.upazilas || []).map(upazila => ({
+                            name: upazila.name,
+                            bn_name: upazila.bn_name || ""
+                        }))
+                    }))
+                }));
+
+                populate(
+                    divisionSelect,
+                    "Select division",
+                    bangladeshData
+                );
+
+                populate(districtSelect, "Select district", [], true);
+                populate(upazilaSelect, "Select upazila", [], true);
+                populate(wardSelect, "Select ward", [], true);
+
+                setStatus(
+                    locationStatus,
+                    "Location data loaded successfully. Select your area."
+                );
+
+            } catch (error) {
+                console.error("Location loading error:", error);
+
+                populate(
+                    divisionSelect,
+                    "Could not load divisions",
+                    [],
+                    true
+                );
+
+                setStatus(
+                    locationStatus,
+                    "Could not load location data. Check your internet connection and browser console (F12). Error: " +
+                    error.message,
+                    "error"
+                );
+            }
+        }
+
+        divisionSelect.addEventListener("change", () => {
+            clearResults();
+
+            const division = getSelectedDivision();
+
+            populate(
+                districtSelect,
+                "Select district",
+                division ? division.districts : [],
+                !division
+            );
+
+            populate(upazilaSelect, "Select upazila", [], true);
+            populate(wardSelect, "Select ward", [], true);
+
+            if (division) {
+                setStatus(
+                    locationStatus,
+                    "Division selected. Now select a district."
+                );
+            }
+        });
+
+        districtSelect.addEventListener("change", () => {
+            clearResults();
+
+            const district = getSelectedDistrict();
+
+            populate(
+                upazilaSelect,
+                "Select upazila",
+                district ? district.upazilas : [],
+                !district
+            );
+
+            populate(wardSelect, "Select ward", [], true);
+
+            if (district) {
+                setStatus(
+                    locationStatus,
+                    "District selected. Now select an upazila."
+                );
+            }
+        });
+
+        upazilaSelect.addEventListener("change", () => {
+            clearResults();
+
+            if (upazilaSelect.value) {
+                fillWards();
+
+                setStatus(
+                    locationStatus,
+                    "Upazila selected. Now select a ward."
+                );
+            } else {
+                populate(wardSelect, "Select ward", [], true);
+            }
+        });
+
+        wardSelect.addEventListener("change", () => {
+            clearResults();
+
+            if (wardSelect.value) {
+                setStatus(
+                    locationStatus,
+                    "Area selected. Click Search Vote Count to continue."
+                );
+            }
+        });
+
+        function addCandidateResults(candidates) {
+            const container = document.getElementById("candidateResults");
+            container.replaceChildren();
+
+            if (!Array.isArray(candidates) || candidates.length === 0) {
+                return;
+            }
+
+            const heading = document.createElement("h2");
+            heading.textContent = "Candidate Vote Details";
+            heading.style.color = "#006A4E";
+            heading.style.marginBottom = "14px";
+
+            container.appendChild(heading);
+
+            candidates.forEach(candidate => {
+                const card = document.createElement("div");
+                card.className = "candidate-card";
+
+                const name = document.createElement("div");
+                name.className = "candidate-name";
+                name.textContent =
+                    candidate.candidate_name ||
+                    candidate.name ||
+                    "Candidate";
+
+                const votes = document.createElement("div");
+                votes.className = "candidate-votes";
+                votes.textContent =
+                    "Votes: " +
+                    Number(candidate.votes || 0).toLocaleString();
+
+                card.append(name, votes);
+                container.appendChild(card);
+            });
+        }
+
+        async function searchVoteCount() {
+            const division = divisionSelect.value;
+            const district = districtSelect.value;
+            const upazila = upazilaSelect.value;
+            const ward = wardSelect.value;
+
+            if (!division || !district || !upazila || !ward) {
+                setStatus(
+                    locationStatus,
+                    "Please select division, district, upazila and ward.",
+                    "error"
+                );
+                return;
+            }
+
+            clearResults();
+            resultsPanel.hidden = false;
+
+            searchBtn.disabled = true;
+            searchBtn.textContent = "Searching...";
+
+            document.getElementById("selectedArea").textContent =
+                "Division: " + division +
+                " | District: " + district +
+                " | Upazila: " + upazila +
+                " | Ward: " + ward;
+
+            setStatus(
+                resultStatus,
+                "Connecting to the vote-count server...",
+                "info"
+            );
+
+            try {
+                const params = new URLSearchParams({
+                    division,
+                    district,
+                    upazila,
+                    ward
+                });
+
+                const response = await fetch(
+                    VOTE_API + "?" + params.toString(),
+                    {
+                        method: "GET",
+                        headers: {
+                            "Accept": "application/json"
+                        }
+                    }
+                );
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(
+                        data.message || "HTTP " + response.status
+                    );
+                }
+
+                if (data.success === false || data.error) {
+                    throw new Error(
+                        data.message || data.error ||
+                        "Unable to retrieve voting results."
+                    );
+                }
+
+                const result =
+                    data.data && typeof data.data === "object"
+                        ? data.data
+                        : data;
+
+                const totalVotes = Number(
+                    result.total_votes ??
+                    result.totalVotes ??
+                    result.total ??
+                    0
+                );
+
+                const validVotes = Number(
+                    result.valid_votes ??
+                    result.validVotes ??
+                    result.valid ??
+                    totalVotes
+                );
+
+                const candidates = Array.isArray(result.candidates)
+                    ? result.candidates
+                    : Array.isArray(result.results)
+                        ? result.results
+                        : [];
+
+                const candidateCount = Number(
+                    result.candidate_count ??
+                    result.candidateCount ??
+                    candidates.length
+                );
+
+                document.getElementById("totalVotes").textContent =
+                    totalVotes.toLocaleString();
+
+                document.getElementById("validVotes").textContent =
+                    validVotes.toLocaleString();
+
+                document.getElementById("candidateCount").textContent =
+                    candidateCount.toLocaleString();
+
+                addCandidateResults(candidates);
+
+                setStatus(
+                    resultStatus,
+                    result.message ||
+                    "Results received from the server.",
+                    "info"
+                );
+
+            } catch (error) {
+                console.error("Vote count error:", error);
+
+                document.getElementById("totalVotes").textContent = "—";
+                document.getElementById("validVotes").textContent = "—";
+                document.getElementById("candidateCount").textContent = "—";
+
+                setStatus(
+                    resultStatus,
+                    "Could not load vote results. Check api/vote-count.php and its JSON response. Error: " +
+                    error.message,
+                    "error"
+                );
+
+            } finally {
+                searchBtn.disabled = false;
+                searchBtn.textContent = "Search Vote Count";
+            }
+        }
+
+        function resetForm() {
+            divisionSelect.value = "";
+
+            populate(districtSelect, "Select district", [], true);
+            populate(upazilaSelect, "Select upazila", [], true);
+            populate(wardSelect, "Select ward", [], true);
+
+            clearResults();
+
+            if (bangladeshData.length > 0) {
+                setStatus(
+                    locationStatus,
+                    "Form reset. Select your area."
+                );
+            } else {
+                setStatus(
+                    locationStatus,
+                    "Location data has not loaded. Refresh the page and check your connection.",
+                    "error"
+                );
+            }
+        }
+
+        searchBtn.addEventListener("click", searchVoteCount);
+        resetBtn.addEventListener("click", resetForm);
+
+        loadLocations();
+    </script>
+
+</body>
+</html>

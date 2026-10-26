@@ -1,0 +1,1038 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>About Us | Dual-Auth Vote</title>
+    <link rel="stylesheet" href="./src/output.css">
+
+    <style>
+        :root {
+            --green: #006a4e;
+            --green-dark: #004d38;
+            --red: #f42a41;
+            --blue: #1e40af;
+            --blue-dark: #172554;
+            --white: #ffffff;
+            --light: #f4f8fb;
+            --text: #183b35;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 100px;
+        }
+
+        body {
+            margin: 0;
+            background: var(--light);
+            color: var(--text);
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .navbar {
+            position: relative;
+            z-index: 10;
+            background: var(--white);
+            border-bottom: 4px solid var(--green);
+        }
+
+        .nav-link {
+            display: inline-block;
+            padding: 10px 12px;
+            border-radius: 7px;
+            color: #344054;
+            font-size: 14px;
+            font-weight: 600;
+            transition: 0.25s;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: var(--green);
+            color: var(--white);
+        }
+
+        .admin-link {
+            background: var(--red);
+            color: var(--white);
+        }
+
+        .admin-link:hover {
+            background: #cf1830;
+        }
+
+        .notice-bar {
+            overflow: hidden;
+            background: var(--red);
+            color: var(--white);
+            padding: 11px 0;
+        }
+
+        .notice-text {
+            width: max-content;
+            white-space: nowrap;
+            animation: notice-scroll 25s linear infinite;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .notice-bar:hover .notice-text {
+            animation-play-state: paused;
+        }
+
+        @keyframes notice-scroll {
+            from {
+                transform: translateX(100vw);
+            }
+
+            to {
+                transform: translateX(-100%);
+            }
+        }
+
+        .hero {
+            min-height: 350px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 55px 20px;
+            background:
+                linear-gradient(
+                    110deg,
+                    rgba(0, 77, 56, 0.94),
+                    rgba(0, 106, 78, 0.82),
+                    rgba(30, 64, 175, 0.83)
+                );
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            width: 350px;
+            height: 350px;
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            border-radius: 50%;
+            top: -180px;
+            left: -80px;
+        }
+
+        .hero::after {
+            content: "";
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border: 35px solid rgba(244, 42, 65, 0.15);
+            border-radius: 50%;
+            bottom: -200px;
+            right: -50px;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 850px;
+            color: white;
+        }
+
+        .hero-title {
+            font-size: clamp(38px, 6vw, 64px);
+            font-weight: 800;
+            letter-spacing: -1.5px;
+            margin: 0 0 14px;
+        }
+
+        .text-red {
+            color: var(--red);
+        }
+
+        .hero-subtitle {
+            font-size: clamp(18px, 2.5vw, 24px);
+            font-weight: 600;
+            margin-bottom: 18px;
+        }
+
+        .hero-description {
+            max-width: 720px;
+            margin: 0 auto;
+            color: #f0fdf8;
+            line-height: 1.8;
+            font-size: 16px;
+        }
+
+        .hero-rule {
+            width: 110px;
+            height: 4px;
+            border-radius: 5px;
+            background: var(--red);
+            margin: 25px auto 0;
+        }
+
+        .section-container {
+            max-width: 1400px;
+            margin: auto;
+            padding: 35px 24px;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 22px;
+            align-items: stretch;
+        }
+
+        .content-card {
+            background: linear-gradient(145deg, #ffffff, #edf8f3);
+            border: 1px solid #dcebe4;
+            border-top: 4px solid var(--green);
+            border-radius: 12px;
+            padding: 26px;
+            box-shadow: 0 5px 18px rgba(0, 60, 40, 0.06);
+            transition: transform 0.25s, box-shadow 0.25s;
+            min-width: 0;
+        }
+
+        .content-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 26px rgba(0, 60, 40, 0.11);
+        }
+
+        .services-card {
+            border-top-color: var(--blue);
+            background: linear-gradient(145deg, #ffffff, #f0f5ff);
+        }
+
+        .contact-card {
+            border-top-color: var(--red);
+        }
+
+        .card-heading {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 23px;
+        }
+
+        .heading-mark {
+            width: 55px;
+            height: 55px;
+            min-width: 55px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: var(--green);
+            color: white;
+            font-weight: 800;
+            font-size: 17px;
+            letter-spacing: 0.5px;
+        }
+
+        .services-card .heading-mark {
+            background: var(--blue);
+        }
+
+        .contact-card .heading-mark {
+            background: var(--red);
+        }
+
+        .card-title {
+            font-size: 27px;
+            line-height: 1.2;
+            font-weight: 800;
+            margin: 0 0 5px;
+            color: var(--green-dark);
+        }
+
+        .services-card .card-title {
+            color: var(--blue);
+        }
+
+        .contact-card .card-title {
+            color: var(--green-dark);
+        }
+
+        .card-subtitle {
+            font-size: 15px;
+            color: #52665f;
+        }
+
+        .body-copy {
+            font-size: 15px;
+            line-height: 1.85;
+            margin-bottom: 15px;
+            color: #344f48;
+        }
+
+        .mission-box {
+            margin-top: 24px;
+            padding: 17px;
+            background: white;
+            border-left: 4px solid var(--red);
+            border-radius: 4px 8px 8px 4px;
+        }
+
+        .mission-label {
+            color: var(--green);
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 7px;
+        }
+
+        .mission-statement {
+            font-size: 20px;
+            font-weight: 800;
+            line-height: 1.5;
+            color: var(--green-dark);
+        }
+
+        .service-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 13px;
+            padding: 15px 0;
+            border-bottom: 1px solid #dce7e9;
+        }
+
+        .service-item:last-of-type {
+            border-bottom: none;
+        }
+
+        .service-number {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-width: 38px;
+            width: 38px;
+            height: 38px;
+            border-radius: 8px;
+            background: #dcece5;
+            color: var(--green);
+            font-size: 14px;
+            font-weight: 800;
+        }
+
+        .service-item:nth-of-type(even) .service-number {
+            background: #fee2e2;
+            color: #c81e35;
+        }
+
+        .service-name {
+            font-size: 15px;
+            font-weight: 800;
+            color: var(--green-dark);
+            margin: 1px 0 6px;
+        }
+
+        .service-description {
+            font-size: 13px;
+            line-height: 1.65;
+            color: #52665f;
+            margin: 0;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 15px 0;
+            border-bottom: 1px solid #e1e9e4;
+        }
+
+        .contact-item:last-of-type {
+            border-bottom: none;
+        }
+
+        .contact-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #64748b;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .contact-value {
+            display: inline-block;
+            color: var(--green-dark);
+            font-size: 15px;
+            font-weight: 700;
+            overflow-wrap: anywhere;
+        }
+
+        .contact-value:hover {
+            color: var(--blue);
+            text-decoration: underline;
+        }
+
+        .contact-note {
+            background: white;
+            border: 1px solid #e2e8f0;
+            padding: 16px;
+            border-radius: 8px;
+            margin-top: 22px;
+            font-size: 14px;
+            line-height: 1.8;
+            color: #52665f;
+        }
+
+        .contact-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .contact-button {
+            display: inline-block;
+            padding: 11px 16px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 700;
+            text-align: center;
+            background: var(--green);
+            color: white;
+            transition: 0.2s;
+        }
+
+        .contact-button:hover {
+            background: var(--green-dark);
+        }
+
+        .contact-button.secondary {
+            background: var(--blue);
+        }
+
+        .contact-button.secondary:hover {
+            background: var(--blue-dark);
+        }
+
+        .bangladesh-strip {
+            height: 5px;
+            background: linear-gradient(
+                to right,
+                var(--green) 0 33.33%,
+                var(--red) 33.33% 66.66%,
+                var(--blue) 66.66% 100%
+            );
+        }
+
+        .footer {
+            background: #073b30;
+            color: white;
+            border-top: 4px solid var(--red);
+        }
+
+        .footer-inner {
+            max-width: 1400px;
+            margin: auto;
+            padding: 25px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .footer-brand {
+            font-size: 21px;
+            font-weight: 800;
+        }
+
+        .footer-muted {
+            color: #d1e5dc;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        .footer-motto {
+            font-weight: 700;
+            text-align: center;
+            line-height: 1.8;
+        }
+
+        .footer-copy {
+            color: #cbd5e1;
+            font-size: 12px;
+            text-align: right;
+            line-height: 1.8;
+        }
+
+        @media (max-width: 1100px) {
+            .content-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .contact-card {
+                grid-column: 1 / -1;
+            }
+
+            .navbar-content {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-card {
+                grid-column: auto;
+            }
+
+            .section-container {
+                padding: 22px 14px;
+            }
+
+            .content-card {
+                padding: 22px;
+            }
+
+            .footer-inner {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .footer-copy {
+                text-align: center;
+            }
+
+            .hero {
+                min-height: 320px;
+                padding: 40px 18px;
+            }
+
+            .card-title {
+                font-size: 24px;
+            }
+
+            .nav-link {
+                padding: 8px 10px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html {
+                scroll-behavior: auto;
+            }
+
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+
+<style id="dav-shared-polish">
+:root{--dav-green:#006A4E;--dav-red:#F42A41;--dav-blue:#1E40AF}
+html{scroll-behavior:smooth} body{animation:davFade .45s ease both}
+@keyframes davFade{from{opacity:.0;transform:translateY(5px)}to{opacity:1;transform:none}}
+@keyframes davFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+button,a,[role=button]{transition:transform .18s ease,box-shadow .18s ease,background-color .18s ease}
+button:hover,a:hover{transform:translateY(-1px)}
+input,select,textarea{transition:border-color .2s,box-shadow .2s}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--dav-green)!important;box-shadow:0 0 0 3px #006a4e20}
+.dav-navbar{position:relative;z-index:40;background:#fff;border-bottom:1px solid #e5e7eb;box-shadow:0 4px 18px #0f172a0b}
+.dav-nav-inner{max-width:1240px;margin:auto;padding:13px 22px;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap}
+.dav-brand{font-weight:900;letter-spacing:-.04em;font-size:20px;text-decoration:none!important}
+.dav-brand .g{color:#006A4E}.dav-brand .r{color:#F42A41}.dav-brand .v{color:#006A4E}
+.dav-links{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.dav-links a{font-size:13px;font-weight:700;color:#334155;text-decoration:none;padding:9px 11px;border-radius:10px}
+.dav-links a:hover{background:#ecfdf5;color:#006A4E}
+.dav-translate{display:flex;align-items:center;gap:8px;font-size:12px;color:#475569}
+#google_translate_element{min-height:24px}
+.goog-te-gadget{font-family:inherit!important;font-size:12px!important}.goog-te-gadget .goog-te-combo{border:1px solid #d1d5db;border-radius:8px;padding:5px;max-width:150px;background:#fff}
+@media(max-width:680px){.dav-nav-inner{padding:12px}.dav-links{gap:2px}.dav-links a{padding:7px;font-size:12px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+</style>
+
+</head>
+
+<body>
+
+    <main>
+
+        <!-- NAVIGATION -->
+        <nav class="navbar px-5 py-3">
+
+            <div class="navbar-content max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4">
+
+                <a href="index.html" class="flex items-center gap-3 shrink-0">
+
+                    <img
+                        src="https://img.magnific.com/premium-vector/outline-map-country-bangladesh-vector-illustration_628809-581.jpg?semt=ais_hybrid&w=740&q=80"
+                        class="h-14 w-14 object-cover rounded-full border-2 border-green-700"
+                        alt="Bangladesh Map Logo">
+
+                    <div>
+                        <h1 class="text-2xl font-bold">
+                            <span style="color:var(--green)">Dual</span>
+                            <span style="color:var(--red)">Auth</span>
+                            <span style="color:var(--green)">Vote</span>
+                        </h1>
+
+                        <p class="text-xs text-gray-500">
+                            Smart Voting System
+                        </p>
+                    </div>
+
+                </a>
+
+                <div class="flex flex-wrap items-center justify-center gap-1">
+
+                    <a href="index.html" class="nav-link">Home</a>
+
+                    <a href="Registration.html" class="nav-link">Registration</a>
+
+                    <a href="login.html" class="nav-link">Login</a>
+
+                    <a href="notice.html" class="nav-link">Notices</a>
+
+                    <a href="about.html" class="nav-link active">About</a>
+
+                    <a href="#services" class="nav-link">Services</a>
+
+                    <a href="#contact" class="nav-link">Contact</a>
+
+                    <a href="admin.html" class="nav-link admin-link">
+                        Admin Panel
+                    </a>
+
+                    <div id="google_translate_element"
+                         class="ml-2 border border-gray-200 rounded-lg px-2 py-1">
+                    </div>
+
+                </div>
+
+            </div>
+
+        </nav>
+
+
+        <!-- NOTICE BAR -->
+        <div class="notice-bar">
+            <div class="notice-text">
+                VOTER INFORMATION &nbsp;&nbsp;&nbsp;
+                Please complete the required identity verification
+                before using voting services.
+                &nbsp;&nbsp;&nbsp;
+                Follow all official instructions and election regulations.
+            </div>
+        </div>
+
+
+        <!-- HERO SECTION -->
+        <header class="hero">
+
+            <div class="hero-content">
+
+                <h2 class="hero-title">
+                    <span>About</span>
+                    <span class="text-red">Us</span>
+                </h2>
+
+                <p class="hero-subtitle">
+                    Building a Transparent, Secure and Smart Voting Future
+                </p>
+
+                <p class="hero-description">
+                    Dual Auth Vote is a digital voting platform concept focused
+                    on accessible services, responsible identity verification
+                    and a clear user experience. Our vision is to support
+                    trustworthy digital services for the people of Bangladesh.
+                </p>
+
+                <div class="hero-rule"></div>
+
+            </div>
+
+        </header>
+
+
+        <!-- MAIN CONTENT -->
+        <section class="section-container">
+
+            <div class="content-grid">
+
+                <!-- ABOUT US -->
+                <article id="about" class="content-card">
+
+                    <div class="card-heading">
+
+                        <div class="heading-mark">DA</div>
+
+                        <div>
+                            <h2 class="card-title">
+                                About <span class="text-red">Us</span>
+                            </h2>
+
+                            <p class="card-subtitle">
+                                Our Mission and Vision
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <p class="body-copy">
+                        Dual Auth Vote is a proposed digital voting platform
+                        intended to make voter-facing services easier to
+                        navigate. It combines a structured interface with
+                        identity verification concepts and clear information
+                        for users.
+                    </p>
+
+                    <p class="body-copy">
+                        The platform concept includes National ID verification,
+                        one-time password authentication and supported
+                        biometric checks. These features are intended to
+                        contribute to account security when properly implemented
+                        and authorized.
+                    </p>
+
+                    <p class="body-copy">
+                        Our vision is to support a digital Bangladesh through
+                        responsible technology, accessible information and
+                        transparent service design.
+                    </p>
+
+                    <div class="mission-box">
+
+                        <p class="mission-label">Our Commitment</p>
+
+                        <p class="mission-statement">
+                            Your Vote.<br>
+                            <span class="text-red">Our Responsibility.</span>
+                        </p>
+
+                    </div>
+
+                    <div class="mt-7">
+                        <div class="bangladesh-strip rounded-full"></div>
+
+                        <p class="text-sm text-gray-500 mt-3 leading-6">
+                            Designed with the values of accessibility,
+                            accountability and responsible digital innovation
+                            in mind.
+                        </p>
+                    </div>
+
+                </article>
+
+
+                <!-- SERVICES -->
+                <article id="services" class="content-card services-card">
+
+                    <div class="card-heading">
+
+                        <div class="heading-mark">SV</div>
+
+                        <div>
+                            <h2 class="card-title">
+                                Our <span style="color:var(--red)">Services</span>
+                            </h2>
+
+                            <p class="card-subtitle">
+                                Platform Features
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="service-item">
+
+                        <div class="service-number">01</div>
+
+                        <div>
+                            <h3 class="service-name">NID Verification</h3>
+
+                            <p class="service-description">
+                                Identity verification using authorized
+                                National ID data and approved procedures.
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="service-item">
+
+                        <div class="service-number">02</div>
+
+                        <div>
+                            <h3 class="service-name">OTP Authentication</h3>
+
+                            <p class="service-description">
+                                One-time password verification to help
+                                protect account access.
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="service-item">
+
+                        <div class="service-number">03</div>
+
+                        <div>
+                            <h3 class="service-name">Biometric Verification</h3>
+
+                            <p class="service-description">
+                                Additional identity checks using supported
+                                biometric technology and appropriate safeguards.
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="service-item">
+
+                        <div class="service-number">04</div>
+
+                        <div>
+                            <h3 class="service-name">Voting Security</h3>
+
+                            <p class="service-description">
+                                Security-focused workflows designed to
+                                support authorized access and protect records.
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="service-item">
+
+                        <div class="service-number">05</div>
+
+                        <div>
+                            <h3 class="service-name">Result Information</h3>
+
+                            <p class="service-description">
+                                Organized result information for authorized
+                                publication at the appropriate time.
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                    <p class="text-xs text-gray-500 mt-5 leading-6">
+                        These descriptions represent proposed features.
+                        Actual election, identity verification and result
+                        services require validated implementation,
+                        authorization and compliance with applicable law.
+                    </p>
+
+                </article>
+
+
+                <!-- CONTACT US -->
+                <article id="contact" class="content-card contact-card">
+
+                    <div class="card-heading">
+
+                        <div class="heading-mark">CU</div>
+
+                        <div>
+                            <h2 class="card-title">
+                                Contact <span class="text-red">Us</span>
+                            </h2>
+
+                            <p class="card-subtitle">
+                                Official Contact Information
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="contact-item">
+
+                        <div class="heading-mark">KM</div>
+
+                        <div>
+                            <p class="contact-label">Name</p>
+
+                            <p class="contact-value">
+                                K.M. Asif Karim
+                            </p>
+
+                            <p class="text-sm text-gray-500 mt-1">
+                                Developer and Maintainer
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="contact-item">
+
+                        <div class="heading-mark">TEL</div>
+
+                        <div>
+                            <p class="contact-label">Phone</p>
+
+                            <a href="tel:+8801308263073"
+                               class="contact-value">
+                                +8801308263073
+                            </a>
+
+                            <p class="text-sm text-gray-500 mt-1">
+                                Telephone contact
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="contact-item">
+
+                        <div class="heading-mark">EM</div>
+
+                        <div class="min-w-0">
+                            <p class="contact-label">Email Address</p>
+
+                            <a href="mailto:asif114226@gmail.com"
+                               class="contact-value">
+                                asif114226@gmail.com
+                            </a>
+
+                            <p class="text-sm text-gray-500 mt-1">
+                                Email correspondence
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="contact-note">
+                        For questions, project information, feedback or
+                        general inquiries, please use the contact details
+                        listed above. Please do not send passwords,
+                        authentication codes or sensitive identity documents
+                        through ordinary email.
+                    </div>
+
+
+                    <div class="contact-buttons">
+
+                        <a href="mailto:asif114226@gmail.com"
+                           class="contact-button">
+                            Send an Email
+                        </a>
+
+                        <a href="tel:+8801308263073"
+                           class="contact-button secondary">
+                            Contact by Phone
+                        </a>
+
+                    </div>
+
+
+                    <div class="mt-7">
+                        <div class="bangladesh-strip rounded-full"></div>
+
+                        <p class="text-center font-bold text-green-800 mt-4">
+                            Digital Bangladesh
+                        </p>
+
+                        <p class="text-center text-sm text-gray-500 mt-1">
+                            Secure. Smart. Democratic.
+                        </p>
+                    </div>
+
+                </article>
+
+            </div>
+
+        </section>
+
+
+        <!-- FOOTER -->
+        <footer class="footer">
+
+            <div class="footer-inner">
+
+                <a href="index.html" class="block text-white">
+
+                    <p class="footer-brand">
+                        <span>Dual</span>
+                        <span class="text-red">Auth</span>
+                        <span>Vote</span>
+                    </p>
+
+                    <p class="footer-muted">
+                        Smart Voting System
+                    </p>
+
+                </a>
+
+
+                <div class="footer-motto">
+                    Secure
+                    <span class="text-red px-2">|</span>
+                    Smart
+                    <span class="text-red px-2">|</span>
+                    Democratic
+                </div>
+
+
+                <div class="footer-copy">
+                    <p>
+                        &copy; <span id="current-year"></span>
+                        Dual Auth Vote
+                    </p>
+
+                    <p>All rights reserved.</p>
+
+                </div>
+
+            </div>
+
+        </footer>
+
+    </main>
+
+
+    <!-- GOOGLE TRANSLATE -->
+    <script>
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement(
+                {
+                    pageLanguage: "en",
+                    includedLanguages: "en,bn",
+                    layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+                },
+                "google_translate_element"
+            );
+        }
+
+        document.getElementById("current-year").textContent =
+            new Date().getFullYear();
+    </script>
+
+    <script
+        src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit">
+    </script>
+
+</body>
+</html>

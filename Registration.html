@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="./src/output.css">
+
+    <title>Registration - Dual Auth Vote</title>
+
+<style id="dav-shared-polish">
+:root{--dav-green:#006A4E;--dav-red:#F42A41;--dav-blue:#1E40AF}
+html{scroll-behavior:smooth} body{animation:davFade .45s ease both}
+@keyframes davFade{from{opacity:.0;transform:translateY(5px)}to{opacity:1;transform:none}}
+@keyframes davFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+button,a,[role=button]{transition:transform .18s ease,box-shadow .18s ease,background-color .18s ease}
+button:hover,a:hover{transform:translateY(-1px)}
+input,select,textarea{transition:border-color .2s,box-shadow .2s}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--dav-green)!important;box-shadow:0 0 0 3px #006a4e20}
+.dav-navbar{position:relative;z-index:40;background:#fff;border-bottom:1px solid #e5e7eb;box-shadow:0 4px 18px #0f172a0b}
+.dav-nav-inner{max-width:1240px;margin:auto;padding:13px 22px;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap}
+.dav-brand{font-weight:900;letter-spacing:-.04em;font-size:20px;text-decoration:none!important}
+.dav-brand .g{color:#006A4E}.dav-brand .r{color:#F42A41}.dav-brand .v{color:#006A4E}
+.dav-links{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.dav-links a{font-size:13px;font-weight:700;color:#334155;text-decoration:none;padding:9px 11px;border-radius:10px}
+.dav-links a:hover{background:#ecfdf5;color:#006A4E}
+.dav-translate{display:flex;align-items:center;gap:8px;font-size:12px;color:#475569}
+#google_translate_element{min-height:24px;display:flex;align-items:center}.dav-translate-slot{margin-left:auto}.dav-translate{flex:0 0 auto}
+.goog-te-gadget{font-family:inherit!important;font-size:12px!important}.goog-te-gadget .goog-te-combo{border:1px solid #d1d5db;border-radius:8px;padding:5px;max-width:150px;background:#fff}
+@media(max-width:680px){.dav-nav-inner{padding:12px}.dav-links{gap:2px}.dav-links a{padding:7px;font-size:12px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+</style>
+
+</head>
+
+<body class="m-0">
+
+<nav class="dav-navbar" aria-label="Main navigation">
+ <div class="dav-nav-inner">
+  <a class="dav-brand" href="/index.html" aria-label="Dual Auth Vote home"><span class="g">Dual</span> <span class="r">Auth</span> <span class="v">Vote</span></a>
+  <div class="dav-links">
+   <a href="/index.html">Home</a><a href="/about.html">About</a><a href="/services.html">Services</a><a href="/notice.html">Notice</a><a href="/vote-count.html">Vote Count</a><a href="/Registration.html">Registration</a><a href="/login.html">Login</a>
+  </div>
+  <div class="dav-translate"><span class="font-semibold">Language</span><div id="google_translate_element"></div></div>
+ </div>
+</nav>
+
+
+    <div
+        class="min-h-screen bg-cover bg-center bg-no-repeat"
+        style="background-image: url('https://t3.ftcdn.net/jpg/02/73/02/44/360_F_273024405_gfVyMkMdUNyPuWEcENmrIZRbnme3xTtU.jpg');">
+
+        <div class="min-h-screen bg-black/70">
+
+            <main class="min-h-[calc(100vh-65px)] px-5 md:px-8 py-6">
+
+                <div class="w-full max-w-6xl mx-auto flex flex-col lg:flex-row items-center justify-center gap-8">
+
+                    <section class="w-full lg:w-[38%] text-white">
+
+                        <div class="max-w-md">
+
+                            <p class="text-green-300 font-semibold text-sm mb-2">
+                                Secure Digital Voting
+                            </p>
+
+                            <h1 class="text-3xl md:text-4xl font-bold leading-tight">
+
+                                Register Today,
+
+                                <span class="text-red-400">
+                                    Shape Tomorrow
+                                </span>
+
+                            </h1>
+
+                            <p class="text-sm text-white/85 mt-4 leading-relaxed">
+
+                                Register to make your voice count and contribute to
+                                building a stronger, smarter, and better Bangladesh.
+
+                            </p>
+
+                            <h2 class="text-xl font-bold mt-5 leading-relaxed">
+
+                                Your Identity,
+
+                                <span class="text-red-400">
+                                    Your Voice,
+                                </span>
+
+                                <span class="text-green-300">
+                                    Your Vote.
+                                </span>
+
+                            </h2>
+
+                            <div class="grid grid-cols-2 gap-2 mt-5">
+
+                                <div class="bg-white/10 backdrop-blur-md border border-white/20 rounded-lg p-3">
+
+                                    <p class="font-semibold text-sm">
+                                        NID Registration
+                                    </p>
+
+                                    <p class="text-xs text-white/65 mt-1">
+                                        Secure Identity
+                                    </p>
+
+                                </div>
+
+                                <div class="bg-white/10 backdrop-blur-md border border-white/20 rounded-lg p-3">
+
+                                    <p class="font-semibold text-sm">
+                                        OTP Verification
+                                    </p>
+
+                                    <p class="text-xs text-white/65 mt-1">
+                                        Email Verification
+                                    </p>
+
+                                </div>
+
+                                <div class="bg-white/10 backdrop-blur-md border border-white/20 rounded-lg p-3">
+
+                                    <p class="font-semibold text-sm">
+                                        Password
+                                    </p>
+
+                                    <p class="text-xs text-white/65 mt-1">
+                                        Secure Account
+                                    </p>
+
+                                </div>
+
+                                <div class="bg-white/10 backdrop-blur-md border border-white/20 rounded-lg p-3">
+
+                                    <p class="font-semibold text-sm">
+                                        Duress Password
+                                    </p>
+
+                                    <p class="text-xs text-white/65 mt-1">
+                                        Emergency Protection
+                                    </p>
+
+                                </div>
+
+                                <div class="bg-white/10 backdrop-blur-md border border-white/20 rounded-lg p-3">
+
+                                    <p class="font-semibold text-sm">
+                                        Biometric
+                                    </p>
+
+                                    <p class="text-xs text-white/65 mt-1">
+                                        Identity Verification
+                                    </p>
+
+                                </div>
+
+                                <div class="bg-white/10 backdrop-blur-md border border-white/20 rounded-lg p-3">
+
+                                    <p class="font-semibold text-sm">
+                                        Secure Access
+                                    </p>
+
+                                    <p class="text-xs text-white/65 mt-1">
+                                        Protected Voting
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                            <div class="mt-4 bg-black/35 backdrop-blur-md border border-green-400/40 rounded-lg p-4">
+
+                                <h3 class="text-green-300 font-semibold text-sm">
+                                    Duress Password
+                                </h3>
+
+                                <p class="text-xs text-white/75 mt-1.5 leading-relaxed">
+
+                                    If you are under threat or coercion, use your
+                                    Duress Password. The system can appear successful
+                                    while the backend securely declines the vote.
+
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+
+                    <section class="w-full lg:w-[520px]">
+
+                        <div class="bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl px-5 py-5 md:px-6">
+
+                            <div class="text-center mb-5">
+
+                                <h1 class="text-2xl font-bold text-green-700">
+                                    Voter Registration
+                                </h1>
+
+                                <p class="text-gray-500 text-sm mt-1">
+                                    Create your secure voting account
+                                </p>
+
+                            </div>
+
+
+                            <form
+                                id="registrationForm"
+                                onsubmit="registerUser(event)"
+                                class="space-y-3.5">
+
+
+                                <div>
+
+                                    <label class="block text-xs font-semibold text-gray-700 mb-1">
+                                        Full Name
+                                    </label>
+
+                                    <input
+                                        id="fullName"
+                                        type="text"
+                                        placeholder="Enter full name"
+                                        required
+                                        class="w-full h-10 px-3 text-sm border border-gray-300 rounded-lg outline-none focus:border-green-600 focus:ring-2 focus:ring-green-100">
+
+                                </div>
+
+
+                                <div>
+
+                                    <label class="block text-xs font-semibold text-gray-700 mb-1">
+                                        Father's Name / Husband's Name
+                                    </label>
+
+                                    <input
+                                        id="guardianName"
+                                        type="text"
+                                        placeholder="Enter name"
+                                        required
+                                        class="w-full h-10 px-3 text-sm border border-gray-300 rounded-lg outline-none focus:border-green-600 focus:ring-2 focus:ring-green-100">
+
+                                </div>
+
+
+                                <div>
+
+                                    <label class="block text-xs font-semibold text-gray-700 mb-1">
+                                        NID Number
+                                    </label>
+
+                                    <input
+                                        id="nid"
+                                        type="text"
+                                        inputmode="numeric"
+                                        maxlength="17"
+                                        placeholder="10, 13 or 17 digit NID"
+                                        required
+                                        class="w-full h-10 px-3 text-sm border border-gray-300 rounded-lg outline-none focus:border-green-600 focus:ring-2 focus:ring-green-100">
+
+                                    <p id="nidError" class="hidden text-xs text-red-600 mt-1"></p>
+                                    <div class="grid md:grid-cols-2 gap-3 mt-4">
+                                        <div>
+                                            <label class="block text-xs font-semibold text-gray-700 mb-1">NID Front Image (required)</label>
+                                            <input id="nidFrontImage" name="nid_front" type="file" accept="image/jpeg,image/png,image/webp" required class="w-full text-xs border border-gray-300 rounded-lg p-2 bg-white">
+                                            <p class="text-xs text-gray-500 mt-1">JPG, PNG or WEBP; maximum 5 MB.</p>
+                                        </div>
+                                        <div>
+                                            <label class="block text-xs font-semibold text-gray-700 mb-1">NID Back Image (required)</label>
+                                            <input id="nidBackImage" name="nid_back" type="file" accept="image/jpeg,image/png,image/webp" required class="w-full text-xs border border-gray-300 rounded-lg p-2 bg-white">
+                                            <p class="text-xs text-gray-500 mt-1">Stored privately for authorized administrator review.</p>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+                                <div>
+
+                                    <label class="block text-xs font-semibold text-gray-700 mb-1">
+                                        Division
+                                    </label>
+
+                                    <select
+                                        id="division"
+                                        onchange="loadDistricts()"
+                                        required
+                                        class="w-full h-10 px-3 text-sm border border-gray-300 rounded-lg bg-white outline-none focus:border-green-600 focus:ring-2 focus:ring-green-100">
+
+                                        <option value="">
+                                            Select Division
+                                        </option>
+
+                                    </select>
+
+                                </div>
+
+
+                                <div>
+
+                                    <label class="block text-xs font-semibold text-gray-700 mb-1">
+                                        District
+                                    </label>
+
+                                    <select
+                                        id="district"
+                                        onchange="loadUpazilas()"
+                                        required
+                                        class="w-full h-10 px-3 text-sm border border-gray-300 rounded-lg bg-white outline-none focus:border-green-600 focus:ring-2 focus:ring-green-100">
+
+                                        <option value="">
+                                            Select District
+                                        </option>
+
+                                    </select>
+
+                                </div>
+
+
+                                <div>
+
+                                    <label class="block text-xs font-semibold text-gray-700 mb-1">
+                                        Upazila
+                                    </label>
+
+                                    <select
+                                        id="upazila"
+                                        required
+                                        class="w-full h-10 px-3 text-sm border border-gray-300 rounded-lg bg-white outline-none focus:border-green-600 focus:ring-2 focus:ring-green-100">
+
+                                        <option value="">
+                                            Select Upazila
+                                        </option>
+
+                                    </select>
+
+                                </div>
+
+
+                                <div>
+
+                                    <label class="block text-xs font-semibold text-gray-700 mb-1">
+                                        Ward
+                                    </label>
+
+                                    <select
+                                        id="ward"
+                                        required
+                                        class="w-full h-10 px-3 text-sm border border-gray-300 rounded-lg bg-white outline-none focus:border-green-600 focus:ring-2 focus:ring-green-100">
+
+                                        <option value="">
+                                            Select Ward
+                                        </option>
+
+                                    </select>
+
+                                </div>
+
+
+                                <div class="space-y-4">
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                      <div>
+                                        <label for="primaryPhone" class="block text-sm font-semibold text-gray-700 mb-1">Primary Phone Number *</label>
+                                        <input id="primaryPhone" type="tel" required autocomplete="tel" placeholder="+8801XXXXXXXXX" class="w-full h-10 px-3 text-sm border border-gray-300 rounded-lg bg-white outline-none focus:border-green-600 focus:ring-2 focus:ring-green-100">
+                                      </div>
+                                      <div>
+                                        <label for="secondaryPhone" class="block text-sm font-semibold text-gray-700 mb-1">Secondary Phone Number *</label>
+                                        <input id="secondaryPhone" type="tel" required placeholder="+8801XXXXXXXXX" class="w-full h-10 px-3 text-sm border border-gray-300 rounded-lg bg-white outline-none focus:border-green-600 focus:ring-2 focus:ring-green-100">
+                                      </div>
+                                    </div>
+                                    <div>
+                                      <label for="email" class="block text-sm font-semibold text-gray-700 mb-1">Email Address *</label>
+                                      <input id="email" type="email" value="" required autocomplete="email" placeholder="Enter your email address" class="w-full h-10 px-3 text-sm border border-gray-300 rounded-lg bg-white outline-none focus:border-green-600 focus:ring-2 focus:ring-green-100">
+                                    </div>
+                                    <div class="rounded-xl border border-red-200 bg-red-50 text-red-800 p-4">
+                                      <strong>Important: Fill in your information exactly as it appears on your NID.</strong>
+                                      <p class="text-sm mt-1">Name, NID number and other details must match your National Identity Card. Upload clear images of both sides.</p>
+                                    </div>
+                                </div>
+
+
+                                <div>
+
+                                    <label class="block text-xs font-semibold text-gray-700 mb-1">
+                                        OTP Verification
+                                    </label>
+
+                                    <div class="flex gap-2">
+
+                                        <input
+                                            id="otp"
+                                            type="text"
+                                            maxlength="6"
+                                            inputmode="numeric"
+                                            placeholder="Enter 6 digit OTP"
+                                            required
+                                            class="flex-1 h-10 px-3 text-sm border border-gray-300 rounded-lg outline-none focus:border-green-600 focus:ring-2 focus:ring-green-100">
+
+                                        <button
+                                            type="button"
+                                            onclick="sendOTP()"
+                                            class="h-10 px-4 bg-green-700 hover:bg-green-800 text-white text-sm rounded-lg font-semibold transition">
+
+                                            Send OTP
+
+                                        </button>
+
+                                    </div>
+
+                                    <p id="otpMessage" class="text-xs mt-1"></p>
+
+                                </div>
+
+
+                                <div>
+
+                                    <label class="block text-xs font-semibold text-gray-700 mb-1">
+                                        Password
+                                    </label>
+
+                                    <div class="relative">
+
+                                        <input
+                                            id="password"
+                                            type="password"
+                                            maxlength="8"
+                                            inputmode="numeric"
+                                            placeholder="8 digit password"
+                                            required
+                                            class="w-full h-10 px-3 pr-14 text-sm border border-gray-300 rounded-lg outline-none focus:border-green-600 focus:ring-2 focus:ring-green-100">
+
+                                        <button
+                                            type="button"
+                                            onclick="toggleField('password', this)"
+                                            class="absolute right-3 top-2.5 text-xs text-green-700 font-semibold">
+
+                                            Show
+
+                                        </button>
+
+                                    </div>
+
+                                    <p id="passwordError" class="hidden text-xs text-red-600 mt-1"></p>
+
+                                </div>
+
+
+                                <div>
+
+                                    <label class="block text-xs font-semibold text-gray-700 mb-1">
+                                        Duress Password
+                                    </label>
+
+                                    <div class="relative">
+
+                                        <input
+                                            id="duressPassword"
+                                            type="password"
+                                            maxlength="8"
+                                            inputmode="numeric"
+                                            placeholder="8 digit emergency password"
+                                            required
+                                            class="w-full h-10 px-3 pr-14 text-sm border border-gray-300 rounded-lg outline-none focus:border-red-500 focus:ring-2 focus:ring-red-100">
+
+                                        <button
+                                            type="button"
+                                            onclick="toggleField('duressPassword', this)"
+                                            class="absolute right-3 top-2.5 text-xs text-red-600 font-semibold">
+
+                                            Show
+
+                                        </button>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="bg-green-50 border border-green-200 rounded-lg px-3 py-2.5">
+
+                                    <h3 class="font-semibold text-green-800 text-sm">
+                                        Biometric Registration
+                                    </h3>
+
+                                    <p class="text-xs text-green-700 mt-0.5">
+
+                                        Complete this form and continue to biometric registration.
+
+                                    </p>
+
+                                </div>
+
+
+                                <button
+                                    type="submit"
+                                    class="w-full h-11 bg-green-700 hover:bg-green-800 text-white font-semibold rounded-lg transition">
+
+                                    Proceed to Biometric Registration
+
+                                </button>
+
+                            </form>
+
+
+                            <div class="text-center mt-3">
+
+                                <p class="text-xs text-gray-500">
+                                    Your identity. Your voice. Your vote.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+                </div>
+
+            </main>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        function normalizeNidDigits(value) {
+            return String(value).replace(/[০-৯]/g, d => String(d.charCodeAt(0) - 0x09E6))
+                .replace(/[٠-٩]/g, d => String(d.charCodeAt(0) - 0x0660))
+                .replace(/[۰-۹]/g, d => String(d.charCodeAt(0) - 0x06F0))
+                .replace(/[\s-]/g, "");
+        }
+
+        const locationURL =
+            "https://iqbalhasandev.github.io/bangladesh-geo-json/bangladesh-geo.json";
+
+        let bangladeshData = [];
+
+
+        async function loadLocationData() {
+
+            try {
+
+                const response = await fetch(locationURL);
+
+                if (!response.ok) {
+                    throw new Error("Location data could not be loaded");
+                }
+
+                bangladeshData = await response.json();
+
+                loadDivisions();
+                loadWards();
+
+            } catch (error) {
+
+                console.error(error);
+
+                document.getElementById("division").innerHTML =
+                    '<option value="">Unable to load divisions</option>';
+
+                document.getElementById("district").innerHTML =
+                    '<option value="">Unable to load districts</option>';
+
+                document.getElementById("upazila").innerHTML =
+                    '<option value="">Unable to load upazilas</option>';
+
+            }
+
+        }
+
+
+        function loadDivisions() {
+
+            const divisionSelect =
+                document.getElementById("division");
+
+            divisionSelect.innerHTML =
+                '<option value="">Select Division</option>';
+
+            bangladeshData.forEach((division, index) => {
+
+                const option =
+                    document.createElement("option");
+
+                option.value = index;
+                option.textContent = division.name;
+
+                divisionSelect.appendChild(option);
+
+            });
+
+        }
+
+
+        function loadDistricts() {
+
+            const divisionSelect =
+                document.getElementById("division");
+
+            const districtSelect =
+                document.getElementById("district");
+
+            const upazilaSelect =
+                document.getElementById("upazila");
+
+            districtSelect.innerHTML =
+                '<option value="">Select District</option>';
+
+            upazilaSelect.innerHTML =
+                '<option value="">Select Upazila</option>';
+
+            if (divisionSelect.value === "") {
+                return;
+            }
+
+            const division =
+                bangladeshData[
+                    Number(divisionSelect.value)
+                ];
+
+            if (!division || !Array.isArray(division.districts)) {
+                return;
+            }
+
+            division.districts.forEach((district, index) => {
+
+                const option =
+                    document.createElement("option");
+
+                option.value = index;
+                option.textContent = district.name;
+
+                districtSelect.appendChild(option);
+
+            });
+
+        }
+
+
+        function loadUpazilas() {
+
+            const divisionSelect =
+                document.getElementById("division");
+
+            const districtSelect =
+                document.getElementById("district");
+
+            const upazilaSelect =
+                document.getElementById("upazila");
+
+            upazilaSelect.innerHTML =
+                '<option value="">Select Upazila</option>';
+
+            if (
+                divisionSelect.value === "" ||
+                districtSelect.value === ""
+            ) {
+                return;
+            }
+
+            const division =
+                bangladeshData[
+                    Number(divisionSelect.value)
+                ];
+
+            if (!division || !Array.isArray(division.districts)) {
+                return;
+            }
+
+            const district =
+                division.districts[
+                    Number(districtSelect.value)
+                ];
+
+            if (!district || !Array.isArray(district.upazilas)) {
+                return;
+            }
+
+            district.upazilas.forEach((upazila, index) => {
+
+                const option =
+                    document.createElement("option");
+
+                option.value = index;
+                option.textContent = upazila.name;
+
+                upazilaSelect.appendChild(option);
+
+            });
+
+        }
+
+
+        function loadWards() {
+
+            const wardSelect =
+                document.getElementById("ward");
+
+            wardSelect.innerHTML =
+                '<option value="">Select Ward</option>';
+
+            for (let i = 1; i <= 99; i++) {
+
+                const option =
+                    document.createElement("option");
+
+                option.value = i;
+                option.textContent = "Ward " + i;
+
+                wardSelect.appendChild(option);
+
+            }
+
+        }
+
+
+        function toggleField(id, button) {
+
+            const field =
+                document.getElementById(id);
+
+            if (field.type === "password") {
+
+                field.type = "text";
+                button.innerText = "Hide";
+
+            } else {
+
+                field.type = "password";
+                button.innerText = "Show";
+
+            }
+
+        }
+
+
+      async function getCsrfToken() {
+            const response = await fetch("api/csrf.php", {credentials:"same-origin"});
+            const data = await response.json();
+            if (!data.success) throw new Error("Could not initialize secure session.");
+            return data.csrf_token;
+        }
+
+      async function sendOTP() {
+
+    const email =
+        document.getElementById("email")
+            .value
+            .trim();
+
+    const message =
+        document.getElementById("otpMessage");
+
+
+    if (!email) {
+
+        message.innerText =
+            "Please enter your email address first.";
+
+        message.className =
+            "text-xs text-red-600 mt-1";
+
+        return;
+    }
+
+
+    message.innerText =
+        "Sending OTP...";
+
+    message.className =
+        "text-xs text-gray-600 mt-1";
+
+
+    const formData =
+        new FormData();
+
+    formData.append(
+        "email",
+        email
+    );
+
+
+    try {
+
+        const csrf = await getCsrfToken();
+        formData.append("csrf_token", csrf);
+        const response = await fetch("api/send-otp.php", {
+            method: "POST", body: formData, credentials: "same-origin"
+        });
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok || !data.success) {
+
+            throw new Error(
+                data.message ||
+                "Could not send OTP."
+            );
+
+        }
+
+
+        message.innerText =
+            "OTP sent successfully. Check your email.";
+
+        message.className =
+            "text-xs text-green-700 mt-1";
+
+
+    } catch (error) {
+
+        message.innerText =
+            error.message;
+
+        message.className =
+            "text-xs text-red-600 mt-1";
+
+    }
+
+}
+async function registerUser(event) {
+
+    event.preventDefault();
+
+    const fullName =
+        document.getElementById("fullName").value.trim();
+
+    const guardianName =
+        document.getElementById("guardianName").value.trim();
+
+    const nid =
+        normalizeNidDigits(document.getElementById("nid").value);
+
+    const divisionSelect =
+        document.getElementById("division");
+
+    const districtSelect =
+        document.getElementById("district");
+
+    const upazilaSelect =
+        document.getElementById("upazila");
+
+    const wardSelect =
+        document.getElementById("ward");
+
+    const division =
+        divisionSelect.options[
+            divisionSelect.selectedIndex
+        ].text;
+
+    const district =
+        districtSelect.options[
+            districtSelect.selectedIndex
+        ].text;
+
+    const upazila =
+        upazilaSelect.options[
+            upazilaSelect.selectedIndex
+        ].text;
+
+    const ward =
+        wardSelect.options[
+            wardSelect.selectedIndex
+        ].text;
+
+    if (divisionSelect.value === "" || districtSelect.value === "" ||
+        upazilaSelect.value === "" || wardSelect.value === "") {
+        alert("Please select Division, District, Upazila and Ward. If the lists are empty, check your internet connection and reload the page.");
+        return;
+    }
+
+    const primaryPhone = document.getElementById("primaryPhone").value.trim();
+    const secondaryPhone = document.getElementById("secondaryPhone").value.trim();
+    if (!primaryPhone || !secondaryPhone || primaryPhone === secondaryPhone) {
+        alert("Enter two different phone numbers.");
+        return;
+    }
+
+    const email =
+        document.getElementById("email").value.trim();
+
+    const otp =
+        normalizeNidDigits(document.getElementById("otp").value).trim();
+
+    const password =
+        normalizeNidDigits(document.getElementById("password").value).trim();
+
+    const duressPassword =
+        normalizeNidDigits(document.getElementById("duressPassword").value).trim();
+
+    const nidError =
+        document.getElementById("nidError");
+
+    const passwordError =
+        document.getElementById("passwordError");
+
+    const otpMessage =
+        document.getElementById("otpMessage");
+
+
+    nidError.classList.add("hidden");
+    passwordError.classList.add("hidden");
+
+
+    if (!/^\d{10}$|^\d{13}$|^\d{17}$/.test(nid)) {
+
+        nidError.innerText =
+            "NID must contain exactly 10, 13 or 17 digits.";
+
+        nidError.classList.remove("hidden");
+
+        return;
+    }
+
+
+    if (!/^\d{8}$/.test(password)) {
+
+        passwordError.innerText =
+            "Password must contain exactly 8 digits.";
+
+        passwordError.classList.remove("hidden");
+
+        return;
+    }
+
+
+    if (!/^\d{8}$/.test(duressPassword)) {
+
+        alert(
+            "Duress Password must contain exactly 8 digits."
+        );
+
+        return;
+    }
+
+
+    if (password === duressPassword) {
+
+        alert(
+            "Password and Duress Password must be different."
+        );
+
+        return;
+    }
+
+
+    if (!/^\d{6}$/.test(otp)) {
+
+        otpMessage.innerText =
+            "Enter the 6 digit OTP.";
+
+        otpMessage.className =
+            "text-xs text-red-600 mt-1";
+
+        return;
+    }
+
+
+    const formData =
+        new FormData();
+
+    formData.append(
+        "fullName",
+        fullName
+    );
+
+    formData.append(
+        "guardianName",
+        guardianName
+    );
+
+    formData.append(
+        "nid",
+        nid
+    );
+
+    formData.append(
+        "division",
+        division
+    );
+
+    formData.append(
+        "district",
+        district
+    );
+
+    formData.append(
+        "upazila",
+        upazila
+    );
+
+    formData.append(
+        "ward",
+        ward
+    );
+
+    formData.append(
+        "primaryPhone",
+        primaryPhone
+    );
+
+    formData.append(
+        "secondaryPhone",
+        secondaryPhone
+    );
+
+    formData.append(
+        "email",
+        email
+    );
+
+    formData.append(
+        "otp",
+        otp
+    );
+
+    formData.append(
+        "password",
+        password
+    );
+
+    formData.append(
+        "duressPassword",
+        duressPassword
+    );
+
+    const nidFrontImage = document.getElementById("nidFrontImage").files[0];
+    const nidBackImage = document.getElementById("nidBackImage").files[0];
+    if (!nidFrontImage || !nidBackImage) {
+        alert("Please upload both the front and back of your NID.");
+        return;
+    }
+    formData.append("nid_front", nidFrontImage);
+    formData.append("nid_back", nidBackImage);
+
+
+    try {
+
+        const csrf = await getCsrfToken();
+        formData.append("csrf_token", csrf);
+        const response = await fetch("api/registration.php", {
+            method: "POST", body: formData, credentials: "same-origin"
+        });
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok || !data.success) {
+
+            throw new Error(
+                data.message ||
+                "Registration failed."
+            );
+
+        }
+
+
+        alert(
+            "Registration successful. Proceeding to biometric registration."
+        );
+
+
+        sessionStorage.setItem(
+            "registered_voter_id",
+            data.voter_id
+        );
+
+
+        sessionStorage.setItem(
+            "registered_nid",
+            nid
+        );
+
+        
+
+        window.location.href =
+            "biometricreg.html";
+
+
+    } catch (error) {
+
+        alert(
+            error.message
+        );
+
+    }
+
+}
+
+        function googleTranslateElementInit() {
+
+            new google.translate.TranslateElement(
+
+                {
+                    pageLanguage: "en",
+                    includedLanguages: "en,bn",
+                    layout:
+                        google.translate.TranslateElement.InlineLayout.SIMPLE
+                },
+
+                "google_translate_element"
+
+            );
+
+        }
+
+
+        loadLocationData();
+
+    </script>
+
+
+    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+</body>
+
+</html>

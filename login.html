@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="./src/output.css">
+
+    <title>Login - Dual-Auth Vote</title>
+
+<style id="dav-shared-polish">
+:root{--dav-green:#006A4E;--dav-red:#F42A41;--dav-blue:#1E40AF}
+html{scroll-behavior:smooth} body{animation:davFade .45s ease both}
+@keyframes davFade{from{opacity:.0;transform:translateY(5px)}to{opacity:1;transform:none}}
+@keyframes davFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+button,a,[role=button]{transition:transform .18s ease,box-shadow .18s ease,background-color .18s ease}
+button:hover,a:hover{transform:translateY(-1px)}
+input,select,textarea{transition:border-color .2s,box-shadow .2s}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--dav-green)!important;box-shadow:0 0 0 3px #006a4e20}
+.dav-navbar{position:relative;z-index:40;background:#fff;border-bottom:1px solid #e5e7eb;box-shadow:0 4px 18px #0f172a0b}
+.dav-nav-inner{max-width:1240px;margin:auto;padding:13px 22px;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap}
+.dav-brand{font-weight:900;letter-spacing:-.04em;font-size:20px;text-decoration:none!important}
+.dav-brand .g{color:#006A4E}.dav-brand .r{color:#F42A41}.dav-brand .v{color:#006A4E}
+.dav-links{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.dav-links a{font-size:13px;font-weight:700;color:#334155;text-decoration:none;padding:9px 11px;border-radius:10px}
+.dav-links a:hover{background:#ecfdf5;color:#006A4E}
+.dav-translate{display:flex;align-items:center;gap:8px;font-size:12px;color:#475569}
+#google_translate_element{min-height:24px;display:flex;align-items:center}.dav-translate-slot{margin-left:auto}.dav-translate{flex:0 0 auto}
+.goog-te-gadget{font-family:inherit!important;font-size:12px!important}.goog-te-gadget .goog-te-combo{border:1px solid #d1d5db;border-radius:8px;padding:5px;max-width:150px;background:#fff}
+@media(max-width:680px){.dav-nav-inner{padding:12px}.dav-links{gap:2px}.dav-links a{padding:7px;font-size:12px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+</style>
+
+</head>
+
+<body>
+
+<nav class="dav-navbar" aria-label="Main navigation">
+ <div class="dav-nav-inner">
+  <a class="dav-brand" href="/index.html" aria-label="Dual Auth Vote home"><span class="g">Dual</span> <span class="r">Auth</span> <span class="v">Vote</span></a>
+  <div class="dav-links">
+   <a href="/index.html">Home</a><a href="/about.html">About</a><a href="/services.html">Services</a><a href="/notice.html">Notice</a><a href="/vote-count.html">Vote Count</a><a href="/Registration.html">Registration</a><a href="/login.html">Login</a>
+  </div>
+  <div class="dav-translate"><span class="font-semibold">Language</span><div id="google_translate_element"></div></div>
+ </div>
+</nav>
+
+
+    <div
+        class="min-h-screen bg-cover bg-center bg-no-repeat"
+        style="background-image: url('https://images.pexels.com/photos/36942020/pexels-photo-36942020.jpeg?cs=srgb&dl=pexels-jubersahel-36942020.jpg&fm=jpg');">
+
+        <div class="min-h-screen bg-black/25">
+
+            <main class="min-h-screen flex items-center justify-between px-6 md:px-16 pt-20">
+
+                <div class="hidden md:block text-white max-w-lg drop-shadow-md">
+
+                    <p class="text-green-300 font-bold text-lg mb-3">
+                        🇧🇩 Secure Digital Voting
+                    </p>
+
+                    <h1 class="text-5xl font-extrabold leading-tight">
+
+                        Your Vote,
+
+                        <span class="text-red-400">
+                            Your Voice.
+                        </span>
+
+                    </h1>
+
+                    <p class="text-lg text-white/95 mt-5 leading-relaxed font-medium">
+                     Cast your vote with confidence.
+                     Our secure authentication system helps
+                     protect your identity and your vote.
+                    </p>
+
+                    <div class="mt-6 flex gap-4">
+
+                        <div class="bg-black/40 backdrop-blur-md border border-white/20 p-4 rounded-xl">
+
+                            <p class="font-bold text-white">
+                                NID
+                            </p>
+
+                            <p class="text-sm text-white/80">
+                                Secure Identity
+                            </p>
+
+                        </div>
+
+                        <div class="bg-black/40 backdrop-blur-md border border-white/20 p-4 rounded-xl">
+
+                            <p class="font-bold text-white">
+                                Password
+                            </p>
+
+                            <p class="text-sm text-white/80">
+                                Protected Access
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- Login Box - Bright White Background -->
+                <div
+                    class="w-full max-w-md bg-white/95 backdrop-blur-xl p-8 rounded-2xl shadow-2xl mx-auto md:mx-0 border border-gray-200 text-gray-900">
+
+                    <h1 class="text-3xl font-bold text-green-800 text-center">
+                        Voter Login
+                    </h1>
+
+                    <p class="text-center text-gray-600 mt-2 mb-6">
+                        Sign in using your NID and password
+                    </p>
+
+                    <form
+                        class="space-y-4"
+                        onsubmit="loginUser(event)">
+
+                        <div>
+
+                            <label
+                                class="block text-sm font-semibold text-gray-700 mb-2">
+
+                                NID Number
+
+                            </label>
+
+                            <input
+                                id="nid"
+                                type="text"
+                                inputmode="numeric"
+                                maxlength="17"
+                                placeholder="Enter your NID"
+                                required
+                                class="w-full p-3 bg-gray-50 border border-gray-300 text-gray-900 placeholder-gray-400 rounded-lg outline-none focus:bg-white focus:border-green-600 focus:ring-2 focus:ring-green-100 transition">
+
+                        </div>
+
+                        <p
+                            id="nidError"
+                            class="hidden text-sm text-red-600">
+                        </p>
+
+                        <div>
+
+                            <label
+                                class="block text-sm font-semibold text-gray-700 mb-2">
+
+                                Password
+
+                            </label>
+
+                            <div class="relative">
+
+                                <input
+                                    id="password"
+                                    type="password"
+                                    maxlength="8"
+                                    inputmode="numeric"
+                                    placeholder="Enter 8 digit password"
+                                    required
+                                    class="w-full p-3 pr-16 bg-gray-50 border border-gray-300 text-gray-900 placeholder-gray-400 rounded-lg outline-none focus:bg-white focus:border-green-600 focus:ring-2 focus:ring-green-100 transition">
+
+                                <button
+                                    type="button"
+                                    onclick="togglePassword()"
+                                    class="absolute right-3 top-3.5 text-sm text-green-700 font-semibold hover:text-green-800">
+
+                                    Show
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                        <p
+                            id="passwordError"
+                            class="hidden text-sm text-red-600">
+                        </p>
+
+                        <div class="text-right">
+
+                            <a
+                                href="#"
+                                class="text-sm text-green-700 font-semibold hover:text-red-600 transition-colors duration-200">
+
+                                Forgot Password?
+
+                            </a>
+
+                        </div>
+
+                        <button
+                            type="submit"
+                            class="w-full bg-green-700 hover:bg-green-800 text-white font-semibold p-3 rounded-lg shadow-lg transition duration-200">
+
+                            Login
+
+                        </button>
+
+                    </form>
+
+                    <div class="flex items-center my-6">
+
+                        <div class="flex-1 border-t border-gray-200"></div>
+
+                        <span class="px-3 text-xs uppercase tracking-wider text-gray-400 font-medium">
+                            Secure Authentication
+                        </span>
+
+                        <div class="flex-1 border-t border-gray-200"></div>
+
+                    </div>
+
+                    <div class="text-center text-sm text-gray-500">
+                        🇧🇩 Your vote matters. Vote securely.
+                    </div>
+
+                </div>
+
+            </main>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        function togglePassword() {
+
+            const password = document.getElementById("password");
+            const button = document.querySelector("#password + button");
+
+            if (password.type === "password") {
+
+                password.type = "text";
+                button.innerText = "Hide";
+
+            } else {
+
+                password.type = "password";
+                button.innerText = "Show";
+
+            }
+
+        }
+
+
+        function normalizeNidDigits(value) {
+            return String(value).replace(/[০-৯]/g, d => String(d.charCodeAt(0) - 0x09E6))
+                .replace(/[٠-٩]/g, d => String(d.charCodeAt(0) - 0x0660))
+                .replace(/[۰-۹]/g, d => String(d.charCodeAt(0) - 0x06F0))
+                .replace(/[\s-]/g, "");
+        }
+
+        async function loginUser(event) {
+            event.preventDefault();
+            const nid = normalizeNidDigits(document.getElementById("nid").value);
+            const password = document.getElementById("password").value.trim();
+            const nidError = document.getElementById("nidError");
+            const passwordError = document.getElementById("passwordError");
+            nidError.classList.add("hidden"); passwordError.classList.add("hidden");
+
+            if (!/^(?:\d{10}|\d{13}|\d{17})$/.test(nid)) {
+                nidError.innerText = "NID must contain exactly 10, 13 or 17 digits.";
+                nidError.classList.remove("hidden"); return;
+            }
+            if (!/^\d{8}$/.test(password)) {
+                passwordError.innerText = "Password must contain exactly 8 digits.";
+                passwordError.classList.remove("hidden"); return;
+            }
+
+            try {
+                const csrfResponse = await fetch("api/csrf.php", {credentials:"same-origin"});
+                const csrfData = await csrfResponse.json();
+                if (!csrfResponse.ok || !csrfData.success || !csrfData.csrf_token) {
+                    throw new Error("Could not initialize a secure session. Refresh and try again.");
+                }
+                const response = await fetch("api/login.php", {
+                    method:"POST", credentials:"same-origin",
+                    headers: {"X-CSRF-Token": csrfData.csrf_token, "Content-Type":"application/x-www-form-urlencoded"},
+                    body: new URLSearchParams({nid,password})
+                });
+                const data = await response.json();
+                if (!response.ok || !data.success) throw new Error(data.message || "Login failed.");
+                sessionStorage.setItem("login_nid", nid);
+                sessionStorage.setItem("duress_mode", data.duress_mode ? "1" : "0");
+                window.location.href = data.duress_mode ? "index.html" : ((data.voter && data.voter.face_status !== "approved") ? "face-registration.html" : "face-verification.html");
+            } catch (error) {
+                passwordError.innerText = error.message;
+                passwordError.classList.remove("hidden");
+            }
+        }
+
+        function googleTranslateElementInit() {
+
+            new google.translate.TranslateElement(
+
+                {
+                    pageLanguage: "en",
+                    includedLanguages: "en,bn",
+                    layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+                },
+
+                "google_translate_element"
+
+            );
+
+        }
+
+    </script>
+
+
+    <script
+        type="text/javascript"
+        src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"> 
+    </script> 
+ 
+</body> 
+ 
+</html>

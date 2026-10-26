@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="./src/output.css">
+<title>Dual Auth Vote - Admin Panel</title>
+<style>
+:root{--green:#006A4E;--red:#F42A41;--blue:#1E40AF}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;min-height:100vh;background:#f3f4f6;color:#1f2937;font-family:Arial,sans-serif}
+button,input,select,textarea{font:inherit}
+button,a{transition:.2s ease}
+button:hover,a:hover{transform:translateY(-1px)}
+.btn{display:inline-block;border:0;padding:10px 16px;border-radius:8px;font-weight:700;cursor:pointer;text-decoration:none}
+.btn:disabled{opacity:.6;cursor:not-allowed}
+.btn-green{background:var(--green);color:white}
+.btn-red{background:var(--red);color:white}
+.btn-blue{background:var(--blue);color:white}
+.field{width:100%;min-width:0;padding:11px 13px;border:1px solid #d1d5db;border-radius:8px;background:white;outline:none}
+.field:focus{border-color:var(--green);box-shadow:0 0 0 3px #006a4e20}
+.dav-navbar{position:relative;z-index:1100;background:white;border-bottom:1px solid #e5e7eb;box-shadow:0 4px 18px #0f172a0b}
+.dav-nav-inner{max-width:1240px;margin:auto;padding:13px 22px;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap}
+.dav-brand{font-size:20px;font-weight:900;letter-spacing:-.04em;text-decoration:none}
+.dav-brand .g,.dav-brand .v{color:var(--green)}.dav-brand .r{color:var(--red)}
+.dav-links{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.dav-links a{color:#334155;font-size:13px;font-weight:700;text-decoration:none;padding:9px 11px;border-radius:8px}
+.dav-links a:hover{background:#ecfdf5;color:var(--green)}
+#loginGate{position:fixed;inset:68px 0 0;z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px;overflow-y:auto;background:radial-gradient(ellipse at top left,#dcfce7 0%,#f8fafc 48%,#dbeafe 100%)}
+.login-card{width:100%;max-width:450px;position:relative;padding:34px;border:1px solid #ffffffc9;border-top:4px solid var(--green);border-radius:24px;background:white;box-shadow:0 28px 80px #0f172a20}
+.login-icon{width:58px;height:58px;display:grid;place-items:center;margin:0 auto 18px;border-radius:16px;background:#f0fdf4;color:var(--green)}
+.login-card h1{margin:0;text-align:center;font-size:27px;color:#1e293b}
+.login-subtitle{text-align:center;color:#6b7280;font-size:14px;margin:10px 0 26px}
+.login-card label{display:block;margin-bottom:8px;font-size:14px;font-weight:700}
+.login-card input{padding:14px;border-radius:12px;letter-spacing:1px}
+.login-card button{width:100%;margin-top:15px}
+#adminApp{display:none}
+.admin-layout{display:flex;min-height:calc(100vh - 60px)}
+.sidebar{width:250px;flex-shrink:0;background:var(--green);color:white;padding:22px 15px}
+.sidebar h2{margin:0 0 8px;font-size:21px}
+.sidebar p{color:#d1fae5;font-size:13px}
+.nav-link{display:block;color:white;text-decoration:none;padding:12px;border-radius:8px;font-size:14px;margin:3px 0}
+.nav-link:hover{background:#ffffff20}
+.main-content{min-width:0;flex:1}
+.top-header{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap;padding:20px 25px;background:white;border-bottom:1px solid #e5e7eb}
+.top-header h1{margin:0;font-size:23px}.top-header p{margin:7px 0 0;color:#6b7280;font-size:13px}
+.content{padding:24px}
+.admin-section{scroll-margin-top:20px;margin-bottom:25px;padding:22px;border-radius:14px;background:white;box-shadow:0 3px 15px #0f172a08}
+.admin-section h2{margin:0 0 8px;font-size:21px}
+.muted{color:#6b7280;font-size:13px}
+.stats-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px;margin-bottom:25px}
+.stat-card{padding:20px;background:white;border-radius:12px;box-shadow:0 3px 15px #0f172a08}
+.stat-card p{margin:0;color:#6b7280;font-size:13px}.stat-card h3{margin:12px 0 0;font-size:30px}
+.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.form-group label{display:block;margin-bottom:7px;font-size:13px;font-weight:700}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}
+.toolbar>input,.toolbar>select{flex:1;min-width:180px}
+.table-wrap{overflow-x:auto;border:1px solid #e5e7eb;border-radius:9px}
+.data-table{width:100%;border-collapse:collapse;min-width:900px}
+.data-table th{background:var(--green);color:white;text-align:left;white-space:nowrap}
+.data-table th,.data-table td{padding:12px;border-bottom:1px solid #e5e7eb;font-size:13px}
+.data-table tbody tr:hover{background:#f9fafb}
+.status{display:inline-block;padding:5px 9px;border-radius:20px;font-size:11px;font-weight:700}
+.status-approved{background:#dcfce7;color:#166534}.status-pending{background:#fef3c7;color:#92400e}
+.status-rejected{background:#fee2e2;color:#991b1b}.status-other{background:#e5e7eb;color:#374151}
+.message{margin-top:12px;font-size:13px}.message.error{color:#b91c1c}.message.success{color:#166534}
+.candidate-card,.submission-card{border:1px solid #e5e7eb;border-radius:10px;padding:15px;margin-top:12px;overflow-wrap:anywhere}
+.candidate-card{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.image-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:12px}
+.image-box{border:1px solid #e5e7eb;border-radius:8px;padding:12px}
+.private-image{display:block;max-width:100%;max-height:260px;margin:0 auto;object-fit:contain}
+.section-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:15px}
+@media(max-width:900px){.admin-layout{display:block}.sidebar{width:100%;position:relative}.sidebar nav{display:flex;flex-wrap:wrap;gap:4px}.sidebar .nav-link{padding:8px}.stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.content{padding:14px}}
+@media(max-width:600px){.dav-nav-inner{padding:12px}.dav-links{gap:2px}.dav-links a{padding:7px;font-size:12px}.login-card{padding:25px 20px}.login-card h1{font-size:23px}.form-grid,.image-grid{grid-template-columns:1fr}.stats-grid{grid-template-columns:1fr 1fr;gap:10px}.stat-card{padding:14px}.stat-card h3{font-size:25px}.top-header{padding:16px}.top-header h1{font-size:20px}.admin-section{padding:16px}}
+</style>
+</head>
+<body>
+<nav class="dav-navbar" aria-label="Main navigation">
+<div class="dav-nav-inner">
+<a class="dav-brand" href="/index.html"><span class="g">Dual</span> <span class="r">Auth</span> <span class="v">Vote</span></a>
+<div class="dav-links">
+<a href="/index.html">Home</a><a href="/about.html">About</a><a href="/services.html">Services</a><a href="/notice.html">Notice</a><a href="/vote-count.html">Vote Count</a><a href="/login.html">Login</a>
+</div>
+</div>
+</nav>
+
+<div id="loginGate">
+<div class="login-card">
+<div class="login-icon" aria-hidden="true">
+<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="10" width="16" height="11" rx="2"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3"></path><circle cx="12" cy="15" r="1"></circle></svg>
+</div>
+<h1>Administrator Login</h1><p class="login-subtitle">Secure access to the administration portal</p>
+<form id="adminLoginForm">
+<label for="adminToken">Administrator Token</label>
+<input id="adminToken" class="field" type="password" placeholder="Enter your admin token" autocomplete="current-password" required>
+<button id="loginButton" class="btn btn-green" type="submit">Enter Admin Panel</button>
+<p id="loginMessage" class="message" role="status" aria-live="polite"></p>
+</form>
+<p class="muted" style="margin-top:20px">The server verifies administrator access. The token is not saved in this page.</p>
+</div>
+</div>
+
+<div id="adminApp">
+<div class="admin-layout">
+<aside class="sidebar">
+<h2>Dual <span style="color:#ffb3bd">Auth</span> Vote</h2>
+<p>Administration Portal</p>
+<nav aria-label="Admin navigation">
+<a href="#dashboard" class="nav-link">Dashboard</a>
+<a href="#registrations" class="nav-link">Registration Approval</a>
+<a href="#nid-verification" class="nav-link">NID &amp; Face Review</a>
+<a href="#notice" class="nav-link">Notice Management</a>
+<a href="#candidate" class="nav-link">Candidate Management</a>
+<a href="#voting" class="nav-link">Voting Control</a>
+<a href="#statistics" class="nav-link">Vote Statistics</a>
+<a href="#report" class="nav-link">Election Report</a>
+</nav>
+<hr style="border-color:#ffffff35;margin:20px 0">
+<p>Authenticated Administrator</p>
+<button class="btn btn-red" id="logoutButton" type="button">Logout</button>
+</aside>
+
+<main class="main-content">
+<header class="top-header"><div><h1>Election Administration</h1><p>Manage registrations, candidates and voting</p></div><strong style="color:#006A4E">ADMINISTRATOR</strong></header>
+<div class="content" id="dashboard">
+
+<section class="stats-grid">
+<div class="stat-card"><p>Registered Voters</p><h3 id="registeredCount">0</h3></div>
+<div class="stat-card"><p>Total Votes</p><h3 id="totalVotes">0</h3></div>
+<div class="stat-card"><p>Valid Votes</p><h3 id="validVotes">0</h3></div>
+<div class="stat-card"><p>Cancelled Votes</p><h3 id="cancelledVotes">0</h3></div>
+</section>
+
+<section id="registrations" class="admin-section">
+<h2>Registered Voters &amp; Approval</h2><p class="muted">Search by voter name or NID number. Review registration status.</p>
+<div class="toolbar">
+<input id="registrationSearch" class="field" type="search" placeholder="Search by name or NID number...">
+<select id="registrationStatusFilter" class="field"><option value="all">All registrations</option><option value="pending">Pending</option><option value="approved">Approved</option><option value="rejected">Rejected</option></select>
+<button id="refreshRegistrations" class="btn btn-green" type="button">Refresh</button>
+</div>
+<p id="registrationMessage" class="message" aria-live="polite"></p>
+<div class="table-wrap"><table class="data-table">
+<thead><tr><th>Voter Name</th><th>Father's Name</th><th>NID Number</th><th>Email</th><th>Primary Phone</th><th>Secondary Phone</th><th>Status</th><th>Actions</th></tr></thead>
+<tbody id="registrationList"><tr><td colspan="8">Sign in to load registrations.</td></tr></tbody>
+</table></div>
+</section>
+
+<section id="nid-verification" class="admin-section">
+<h2>NID &amp; Face Verification</h2><p class="muted">Review submitted NID images and face verification requests.</p>
+<div class="section-actions"><button id="refreshNidSubmissions" class="btn btn-green" type="button">Refresh Requests</button></div>
+<p id="nidReviewMessage" class="message" aria-live="polite"></p><div id="nidSubmissionList">Sign in to load requests.</div>
+</section>
+
+<section id="notice" class="admin-section">
+<h2>Notice Management</h2><p class="muted">Publish election notices in PDF format.</p>
+<form id="noticeForm" class="form-grid" style="margin-top:18px">
+<div class="form-group"><label for="noticeTitle">Notice Title</label><input id="noticeTitle" class="field" type="text" placeholder="Notice title" required></div>
+<div class="form-group"><label for="noticeFile">PDF File</label><input id="noticeFile" class="field" type="file" accept=".pdf,application/pdf" required></div>
+<div><button class="btn btn-green" type="submit">Upload Notice PDF</button></div>
+</form>
+<p id="noticeMessage" class="message" aria-live="polite"></p>
+</section>
+
+<section id="candidate" class="admin-section">
+<h2>Candidate Management</h2><p class="muted">Add or remove candidates by voting area.</p>
+<div style="margin:18px 0">
+<div class="section-actions" style="justify-content:space-between"><strong>Existing Candidates</strong><button id="refreshCandidates" class="btn btn-green" type="button">Refresh</button></div>
+<div id="candidateList">Loading candidates...</div>
+</div>
+<div class="form-grid">
+<div class="form-group"><label for="division">Division</label><select id="division" class="field" required><option value="">Select Division</option></select></div>
+<div class="form-group"><label for="district">District</label><select id="district" class="field" disabled required><option value="">Select District</option></select></div>
+<div class="form-group"><label for="upazila">Upazila</label><select id="upazila" class="field" disabled required><option value="">Select Upazila</option></select></div>
+<div class="form-group"><label for="ward">Ward</label><select id="ward" class="field" disabled required><option value="">Select Ward</option></select></div>
+<div class="form-group"><label for="candidateName">Candidate Name</label><input id="candidateName" class="field" type="text" placeholder="Candidate full name" required></div>
+<div class="form-group"><label for="candidateParty">Party Name</label><input id="candidateParty" class="field" type="text" placeholder="Party / Independent"></div>
+<div class="form-group"><label for="candidatePhoto">Candidate Photo</label><input id="candidatePhoto" class="field" type="file" accept="image/*" required></div>
+<div class="form-group"><label for="candidateSymbol">Election Symbol</label><input id="candidateSymbol" class="field" type="file" accept="image/*" required></div>
+</div>
+<div class="section-actions"><button id="addCandidate" class="btn btn-green" type="button">Add Candidate</button></div>
+<p id="candidateMessage" class="message" aria-live="polite"></p>
+</section>
+
+<section id="voting" class="admin-section">
+<h2>Voting Control</h2><p class="muted">Configure election start and end times.</p>
+<div class="form-grid" style="margin-top:18px">
+<div class="form-group"><label for="startTime">Voting Start</label><input id="startTime" class="field" type="datetime-local"></div>
+<div class="form-group"><label for="endTime">Voting End</label><input id="endTime" class="field" type="datetime-local"></div>
+</div>
+<div class="section-actions"><button id="startVoting" class="btn btn-green" type="button">Schedule &amp; Start Voting</button><button id="stopVoting" class="btn btn-red" type="button">Stop Voting</button></div>
+<div style="margin-top:18px;padding:15px;background:#f9fafb;border-radius:8px">Current Status: <strong id="votingStatus">Unknown</strong></div>
+</section>
+
+<section id="statistics" class="admin-section">
+<h2>Area Vote Statistics</h2><p class="muted">Choose a location to inspect election statistics.</p>
+<div class="form-grid" style="margin-top:18px">
+<select id="statDivision" class="field"><option value="">Select Division</option></select>
+<select id="statDistrict" class="field" disabled><option value="">Select District</option></select>
+<select id="statUpazila" class="field" disabled><option value="">Select Upazila</option></select>
+<select id="statWard" class="field" disabled><option value="">Select Ward</option></select>
+</div>
+<div class="stats-grid" style="grid-template-columns:repeat(3,minmax(0,1fr));margin-top:18px">
+<div class="stat-card"><p>Total Votes</p><h3 id="areaTotal">0</h3></div>
+<div class="stat-card"><p>Valid Votes</p><h3 id="areaValid">0</h3></div>
+<div class="stat-card"><p>Cancelled Votes</p><h3 id="areaCancelled">0</h3></div>
+</div>
+<p class="muted">Area-specific figures require an area-statistics API endpoint.</p>
+</section>
+
+<section id="report" class="admin-section">
+<h2>Election Report</h2><p class="muted">Generate or download election reports.</p>
+<div class="section-actions"><a href="api/admin/report.pdf" id="downloadPdfReport" class="btn btn-blue" target="_blank" rel="noopener">Download Full PDF Report</a><button id="generateReport" class="btn btn-green" type="button">Check Election Statistics</button></div>
+</section>
+</div>
+</main>
+</div>
+</div>
+
+<script>
+"use strict";
+
+const API={
+csrf:"api/csrf.php",
+login:"api/admin-login.php",
+logout:"api/logout.php",
+registrations:"api/admin/nid-submissions.php",
+registrationDecision:"api/admin/nid-decision.php",
+nidImage:"api/admin/nid-image.php",
+faceImage:"api/admin/face-image.php",
+faceDecision:"api/admin/face-decision.php",
+notice:"api/notice-upload.php",
+candidates:"api/candidates.php",
+election:"api/election-control.php",
+voteCount:"api/vote-count.php",
+report:"api/admin/report.pdf"
+};
+
+const GEO_URL="https://iqbalhasandev.github.io/bangladesh-geo-json/bangladesh-geo.json";
+const $=id=>document.getElementById(id);
+let geoData=[];
+let registrationRows=[];
+let authenticated=false;
+
+function setMessage(id,message,type="error"){
+const el=$(id);if(!el)return;
+el.textContent=message;el.className="message "+type;
+}
+function safeText(value){
+return value===undefined||value===null||value===""?"Not provided":String(value);
+}
+async function readResponse(response){
+const contentType=response.headers.get("content-type")||"";
+let data;
+if(contentType.includes("application/json"))data=await response.json().catch(()=>({}));
+else data={message:(await response.text().catch(()=>"")).slice(0,300)};
+if(!response.ok||data.success===false){
+if(response.status===404)throw new Error("API endpoint not found (404). Check backend routes.");
+if(response.status===401||response.status===403)throw new Error(data.message||"Authentication failed.");
+throw new Error(data.message||"Server request failed: "+response.status);
+}
+return data;
+}
+async function getCsrfToken(){
+const response=await fetch(API.csrf,{credentials:"same-origin",headers:{Accept:"application/json"}});
+const data=await readResponse(response);
+if(!data.csrf_token)throw new Error("CSRF token was not returned by the server.");
+return data.csrf_token;
+}
+async function adminFetch(url,options={}){
+const requestOptions={...options,credentials:"same-origin",headers:{...(options.headers||{})}};
+const method=(requestOptions.method||"GET").toUpperCase();
+if(method!=="GET"&&method!=="HEAD")requestOptions.headers["X-CSRF-Token"]=await getCsrfToken();
+if(!requestOptions.headers.Accept)requestOptions.headers.Accept="application/json";
+return await readResponse(await fetch(url,requestOptions));
+}
+async function loginAdmin(token){
+const body=new URLSearchParams();body.set("token",token);
+const data=await adminFetch(API.login,{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},body});
+if(data.success===false)throw new Error(data.message||"Admin login failed.");
+authenticated=true;
+$("loginGate").style.display="none";$("adminApp").style.display="block";$("adminToken").value="";
+setMessage("loginMessage","");
+await initializeAdmin();
+}
+$("adminLoginForm").addEventListener("submit",async event=>{
+event.preventDefault();
+const button=$("loginButton"),token=$("adminToken").value.trim();
+if(!token){setMessage("loginMessage","Please enter your administrator token.");return;}
+button.disabled=true;button.textContent="Verifying...";
+setMessage("loginMessage","Verifying administrator...","success");
+try{await loginAdmin(token);}
+catch(error){setMessage("loginMessage",error.message||"Unable to sign in.");}
+finally{button.disabled=false;button.textContent="Enter Admin Panel";}
+});
+$("logoutButton").addEventListener("click",async()=>{
+try{await adminFetch(API.logout,{method:"POST"});}catch(error){console.error(error);}
+authenticated=false;$("adminApp").style.display="none";$("loginGate").style.display="flex";$("adminToken").value="";
+setMessage("loginMessage","You have been logged out.","success");
+});
+async function initializeAdmin(){
+await Promise.allSettled([loadGeoData(),refreshAdminDashboard(),loadNidSubmissions(),loadRegistrations(),loadCandidates()]);
+}
+
+/* Registration table */
+async function loadRegistrations(){
+const list=$("registrationList");list.replaceChildren();
+const row=document.createElement("tr"),cell=document.createElement("td");
+cell.colSpan=8;cell.textContent="Loading registrations...";row.appendChild(cell);list.appendChild(row);
+try{
+const data=await adminFetch(API.registrations);
+registrationRows=data.submissions||data.registrations||[];
+renderRegistrations();
+}catch(error){
+list.replaceChildren();const r=document.createElement("tr"),c=document.createElement("td");
+c.colSpan=8;c.textContent=error.message;r.appendChild(c);list.appendChild(r);
+setMessage("registrationMessage","Could not load registrations: "+error.message);
+}
+}
+function renderRegistrations(){
+const list=$("registrationList"),query=$("registrationSearch").value.trim().toLowerCase(),filter=$("registrationStatusFilter").value;
+list.replaceChildren();
+const filtered=registrationRows.filter(item=>{
+const name=String(item.full_name||item.name||"").toLowerCase();
+const nid=String(item.nid||item.nid_number||"").toLowerCase();
+const status=String(item.status||"pending").toLowerCase();
+return(name.includes(query)||nid.includes(query))&&(filter==="all"||status===filter);
+});
+if(!filtered.length){
+const row=document.createElement("tr"),cell=document.createElement("td");
+cell.colSpan=8;cell.className="muted";cell.textContent="No matching registrations found.";row.appendChild(cell);list.appendChild(row);
+}
+filtered.forEach(item=>{
+const row=document.createElement("tr");
+function addCell(value){const cell=document.createElement("td");cell.textContent=safeText(value);row.appendChild(cell);}
+addCell(item.full_name||item.name);addCell(item.guardian_name||item.father_name||item.fathers_name||item.fatherName);
+addCell(item.nid||item.nid_number);addCell(item.email);addCell(item.primary_phone);addCell(item.secondary_phone);
+const status=String(item.status||"pending").toLowerCase(),statusCell=document.createElement("td"),badge=document.createElement("span");
+badge.className="status "+(status==="approved"?"status-approved":status==="pending"?"status-pending":status==="rejected"?"status-rejected":"status-other");
+badge.textContent=status.toUpperCase();statusCell.appendChild(badge);row.appendChild(statusCell);
+const actions=document.createElement("td");
+if(status==="pending"){
+actions.appendChild(makeActionButton("Approve","btn-green",async()=>{if(confirm("Approve this voter registration?"))await decideRegistration(item.id,"approved","");}));
+actions.appendChild(makeActionButton("Reject","btn-red",async()=>{const reason=prompt("Enter rejection reason:");if(reason&&reason.trim())await decideRegistration(item.id,"rejected",reason.trim());}));
+}else if(status==="approved"){
+actions.appendChild(makeActionButton("Remove Approval","btn-red",async()=>{const reason=prompt("Enter the reason for removing approval:");if(reason&&reason.trim()&&confirm("Confirm removing this approval?"))await decideRegistration(item.id,"rejected",reason.trim());}));
+}else actions.textContent="No action available";
+row.appendChild(actions);list.appendChild(row);
+});
+setMessage("registrationMessage",`Showing ${filtered.length} registration(s) out of ${registrationRows.length}.`,"success");
+}
+function makeActionButton(label,className,callback){
+const button=document.createElement("button");button.type="button";button.className="btn "+className;button.style.margin="2px";button.textContent=label;
+button.addEventListener("click",async()=>{button.disabled=true;try{await callback();}catch(error){alert(error.message||"Action failed.");}finally{button.disabled=false;}});
+return button;
+}
+async function decideRegistration(id,decision,reason){
+const body=new URLSearchParams({id:String(id),decision,reason:reason||""});
+await adminFetch(API.registrationDecision,{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},body});
+await Promise.allSettled([loadRegistrations(),loadNidSubmissions(),refreshAdminDashboard()]);
+alert("Registration status updated.");
+}
+$("registrationSearch").addEventListener("input",renderRegistrations);
+$("registrationStatusFilter").addEventListener("change",renderRegistrations);
+$("refreshRegistrations").addEventListener("click",loadRegistrations);
+
+/* ROBUST BANGLADESH GEOGRAPHY CASCADING DROPDOWNS */
+function extractName(item){
+if(!item)return "";
+if(typeof item==="string"||typeof item==="number")return String(item).trim();
+return String(item.name||item.division||item.district||item.upazila||item.en_name||item.title||"").trim();
+}
+
+function extractList(container){
+if(!container)return [];
+if(Array.isArray(container))return container;
+if(typeof container==="object"){
+for(const k of ["divisions","districts","upazilas","data","results","items"]){
+if(Array.isArray(container[k]))return container[k];
+}
+return Object.entries(container).map(([key,val])=>(typeof val==="object"?{...val,name:val.name||key}:{name:key}));
+}
+return [];
+}
+
+function getChildren(item,type){
+if(!item||typeof item!=="object")return [];
+const keys=type==="districts"?["districts","district","Districts"]:["upazilas","upazilla","upazila","Upazilas","upazillas"];
+for(const k of keys){
+if(item[k]!==undefined&&item[k]!==null)return extractList(item[k]);
+}
+return [];
+}
+
+function resetField(select,placeholder){
+if(!select)return;
+select.replaceChildren(new Option(placeholder,""));
+select.disabled=true;
+}
+
+function populateSelect(select,list,placeholder){
+if(!select)return;
+select.replaceChildren(new Option(placeholder,""));
+list.forEach(item=>{
+const name=extractName(item);
+if(name)select.add(new Option(name,name));
+});
+select.disabled=list.length===0;
+}
+
+async function loadGeoData(){
+try{
+const res=await fetch(GEO_URL,{headers:{Accept:"application/json"}});
+if(!res.ok)throw new Error("HTTP "+res.status);
+const raw=await res.json();
+geoData=extractList(raw);
+if(!geoData.length&&raw&&typeof raw==="object"){
+geoData=extractList(raw.divisions||raw.data||raw.results);
+}
+populateSelect($("division"),geoData,"Select Division");
+populateSelect($("statDivision"),geoData,"Select Division");
+}catch(err){
+console.error("Geo load failed:",err);
+setMessage("candidateMessage","Geographic data could not be loaded. Please verify connection.");
+}
+}
+
+function setupGeoHandlers(prefix){
+const divSelect=$(prefix ? prefix+"Division" : "division");
+const disSelect=$(prefix ? prefix+"District" : "district");
+const upaSelect=$(prefix ? prefix+"Upazila" : "upazila");
+const wardSelect=$(prefix ? prefix+"Ward" : "ward");
+
+if(!divSelect||!disSelect||!upaSelect||!wardSelect)return;
+
+divSelect.addEventListener("change",()=>{
+resetField(disSelect,"Select District");
+resetField(upaSelect,"Select Upazila");
+resetField(wardSelect,"Select Ward");
+
+const divName=divSelect.value;
+if(!divName)return;
+
+const match=geoData.find(d=>extractName(d).toLowerCase()===divName.toLowerCase());
+if(!match)return;
+
+const districts=getChildren(match,"districts");
+populateSelect(disSelect,districts,"Select District");
+});
+
+disSelect.addEventListener("change",()=>{
+resetField(upaSelect,"Select Upazila");
+resetField(wardSelect,"Select Ward");
+
+const divName=divSelect.value,disName=disSelect.value;
+if(!divName||!disName)return;
+
+const divMatch=geoData.find(d=>extractName(d).toLowerCase()===divName.toLowerCase());
+if(!divMatch)return;
+
+const districts=getChildren(divMatch,"districts");
+const disMatch=districts.find(d=>extractName(d).toLowerCase()===disName.toLowerCase());
+if(!disMatch)return;
+
+const upazilas=getChildren(disMatch,"upazilas");
+populateSelect(upaSelect,upazilas,"Select Upazila");
+});
+
+upaSelect.addEventListener("change",()=>{
+resetField(wardSelect,"Select Ward");
+if(!upaSelect.value)return;
+
+wardSelect.replaceChildren(new Option("Select Ward",""));
+for(let i=1;i<=99;i++){
+wardSelect.add(new Option("Ward "+i,"Ward "+i));
+}
+wardSelect.disabled=false;
+});
+}
+
+setupGeoHandlers("");
+setupGeoHandlers("stat");
+
+/* Notice upload */
+$("noticeForm").addEventListener("submit",async event=>{
+event.preventDefault();
+const title=$("noticeTitle").value.trim(),file=$("noticeFile").files[0];
+if(!title||!file){setMessage("noticeMessage","Notice title and PDF are required.");return;}
+if(file.type!=="application/pdf"&&!file.name.toLowerCase().endsWith(".pdf")){setMessage("noticeMessage","Only PDF files are allowed.");return;}
+if(file.size>10*1024*1024){setMessage("noticeMessage","PDF must not exceed 10 MB.");return;}
+const form=new FormData();form.append("title",title);form.append("message",title);form.append("notice_file",file);
+try{await adminFetch(API.notice,{method:"POST",body:form});setMessage("noticeMessage","Notice uploaded successfully.","success");event.target.reset();}
+catch(error){setMessage("noticeMessage",error.message);}
+});
+
+/* Candidate management */
+$("addCandidate").addEventListener("click",async()=>{
+const fields={name:"candidateName",division:"division",district:"district",upazila:"upazila",ward:"ward"};
+const form=new FormData();
+for(const [key,id] of Object.entries(fields)){
+const value=$(id).value.trim();
+if(!value){setMessage("candidateMessage","Please complete all candidate details.");return;}
+form.append(key,value);
+}
+const photo=$("candidatePhoto").files[0],symbol=$("candidateSymbol").files[0];
+if(!photo||!symbol){setMessage("candidateMessage","Candidate photo and election symbol are required.");return;}
+if(!photo.type.startsWith("image/")||!symbol.type.startsWith("image/")){setMessage("candidateMessage","Photo and symbol must be image files.");return;}
+form.append("photo",photo);form.append("symbol",symbol);form.append("party",$("candidateParty").value.trim()||"Independent");
+try{
+await adminFetch(API.candidates,{method:"POST",body:form});
+setMessage("candidateMessage","Candidate added successfully.","success");
+$("candidateName").value="";$("candidateParty").value="";$("candidatePhoto").value="";$("candidateSymbol").value="";
+await loadCandidates();
+}catch(error){setMessage("candidateMessage",error.message);}
+});
+async function loadCandidates(){
+const list=$("candidateList");list.textContent="Loading candidates...";
+try{
+const data=await adminFetch(API.candidates),candidates=data.candidates||[];
+list.replaceChildren();
+if(!candidates.length){list.textContent="No candidates found.";return;}
+candidates.forEach(candidate=>{
+const card=document.createElement("div");card.className="candidate-card";
+const info=document.createElement("div");
+info.textContent=`${candidate.name||"Candidate"} — ${candidate.party||"Independent"} | ${candidate.division||""}, ${candidate.district||""}, ${candidate.upazila||""}, ${candidate.ward||""}`;
+const removeButton=makeActionButton("Remove Candidate","btn-red",async()=>{
+if(!confirm("Remove candidate "+candidate.name+"?"))return;
+await adminFetch(API.candidates+"?id="+encodeURIComponent(candidate.id),{method:"DELETE"});
+await loadCandidates();
+});
+card.append(info,removeButton);list.appendChild(card);
+});
+}catch(error){list.textContent=error.message;}
+}
+$("refreshCandidates").addEventListener("click",loadCandidates);
+
+/* Voting control */
+$("startVoting").addEventListener("click",async()=>{
+const start=$("startTime").value,end=$("endTime").value;
+if(!start||!end||new Date(start)>=new Date(end)){alert("Choose a valid start time and an end time after it.");return;}
+try{
+await adminFetch(API.election,{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:new URLSearchParams({action:"schedule",election_name:"National Digital Election",start_time:start,end_time:end})});
+await adminFetch(API.election,{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:new URLSearchParams({action:"start",election_name:"National Digital Election"})});
+await refreshAdminDashboard();alert("Voting start request completed.");
+}catch(error){alert(error.message);}
+});
+$("stopVoting").addEventListener("click",async()=>{
+if(!confirm("Are you sure you want to stop voting?"))return;
+try{
+await adminFetch(API.election,{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:new URLSearchParams({action:"stop"})});
+await refreshAdminDashboard();alert("Voting stop request completed.");
+}catch(error){alert(error.message);}
+});
+
+/* Dashboard statistics */
+async function refreshAdminDashboard(){
+try{
+const data=await adminFetch(API.voteCount),stats=data.stats||{};
+$("registeredCount").textContent=stats.registered_voters??0;
+$("totalVotes").textContent=stats.total_votes??0;
+$("validVotes").textContent=stats.valid_votes??0;
+$("cancelledVotes").textContent=stats.cancelled_votes??0;
+const election=await adminFetch(API.election);
+$("votingStatus").textContent=election.election?.is_running?"Voting Active":"Voting Stopped";
+}catch(error){console.error("Dashboard loading failed:",error);}
+}
+$("generateReport").addEventListener("click",async()=>{
+try{
+const data=await adminFetch(API.voteCount),stats=data.stats||{};
+alert("Current votes: "+(stats.total_votes??0)+"\nRegistered voters: "+(stats.registered_voters??0)+"\nValid votes: "+(stats.valid_votes??0)+"\nCancelled votes: "+(stats.cancelled_votes??0));
+}catch(error){alert(error.message);}
+});
+
+/* NID and face review */
+async function loadNidSubmissions(){
+const list=$("nidSubmissionList"),message=$("nidReviewMessage");
+list.textContent="Loading requests...";
+try{
+const data=await adminFetch(API.registrations),rows=data.submissions||data.registrations||[];
+list.replaceChildren();
+if(!rows.length){list.textContent="No NID submissions found.";message.textContent="0 requests.";return;}
+rows.forEach(item=>{
+const card=document.createElement("article");card.className="submission-card";
+const heading=document.createElement("h3");heading.style.marginTop="0";
+heading.textContent=`${item.full_name||item.name||"Voter"} — NID ${item.nid||item.nid_number||""}`;
+const details=document.createElement("p");details.className="muted";
+details.textContent=`${item.email||"No email"} | Primary: ${item.primary_phone||"N/A"} | Secondary: ${item.secondary_phone||"N/A"} | ${item.district||""}, ${item.division||""} | Status: ${item.status||"pending"} | Submitted: ${item.uploaded_at||""}`;
+card.append(heading,details);
+const images=document.createElement("div");images.className="image-grid";
+["front","back"].forEach(side=>{
+const box=document.createElement("div");box.className="image-box";
+const label=document.createElement("p");label.style.fontWeight="700";label.textContent="NID "+side;
+const img=document.createElement("img");img.className="private-image";img.alt="Private NID "+side+" image";img.loading="lazy";
+img.src=API.nidImage+"?id="+encodeURIComponent(item.id)+"&side="+encodeURIComponent(side);
+img.onerror=()=>{const unavailable=document.createElement("p");unavailable.className="muted";unavailable.textContent="Image unavailable or access denied.";img.replaceWith(unavailable);};
+box.append(label,img);images.appendChild(box);
+});
+card.appendChild(images);
+if(item.face_image_path&&item.voter_id){
+const faceBox=document.createElement("div");faceBox.className="image-box";faceBox.style.marginTop="12px";
+const faceTitle=document.createElement("p");faceTitle.style.fontWeight="700";faceTitle.textContent="Face status: "+(item.face_status||"pending");faceBox.appendChild(faceTitle);
+const faceImg=document.createElement("img");faceImg.className="private-image";faceImg.alt="Private face registration photo";
+faceImg.src=API.faceImage+"?voter_id="+encodeURIComponent(item.voter_id);
+faceImg.onerror=()=>{const unavailable=document.createElement("p");unavailable.textContent="Face image unavailable or access denied.";faceImg.replaceWith(unavailable);};
+faceBox.appendChild(faceImg);
+if(String(item.face_status||"pending").toLowerCase()==="pending"){
+faceBox.append(makeActionButton("Approve Face","btn-green",()=>decideFace(item.voter_id,"approved")),makeActionButton("Reject Face","btn-red",()=>decideFace(item.voter_id,"rejected")));
+}
+card.appendChild(faceBox);
+}
+if(item.rejection_reason){const reason=document.createElement("p");reason.style.color="#b91c1c";reason.textContent="Rejection reason: "+item.rejection_reason;card.appendChild(reason);}
+if(String(item.status||"pending").toLowerCase()==="pending"){
+const controls=document.createElement("div");controls.className="section-actions";
+controls.append(
+makeActionButton("Approve Registration","btn-green",()=>decideRegistration(item.id,"approved","")),
+makeActionButton("Reject Registration","btn-red",async()=>{const reason=prompt("Enter rejection reason:");if(reason&&reason.trim())await decideRegistration(item.id,"rejected",reason.trim());})
+);
+card.appendChild(controls);
+}
+list.appendChild(card);
+});
+message.textContent=`Loaded ${rows.length} request(s).`;message.className="message success";
+}catch(error){list.textContent=error.message;message.textContent="";}
+}
+async function decideFace(voterId,decision){
+await adminFetch(API.faceDecision,{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:new URLSearchParams({voter_id:String(voterId),decision})});
+await loadNidSubmissions();
+}
+$("refreshNidSubmissions").addEventListener("click",loadNidSubmissions);
+
+/* Existing session check */
+(async function checkExistingSession(){
+try{
+await adminFetch(API.election);
+authenticated=true;$("loginGate").style.display="none";$("adminApp").style.display="block";
+await initializeAdmin();
+}catch(error){
+authenticated=false;$("loginGate").style.display="flex";
+console.info("No existing admin session:",error.message);
+}
+})();
+</script>
+</body>
+</html>
